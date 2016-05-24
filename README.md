@@ -1,27 +1,39 @@
 # Sokoban
 
-This is small (about 50Kb) [Sokoban](https://en.wikipedia.org/wiki/Sokoban) game written in C# with procedurally generated graphics. Game and levels they are all in one .exe file.
+This is small (about 50Kb) [Sokoban](https://en.wikipedia.org/wiki/Sokoban) game written in C# with procedurally generated graphics. Game and levels are packed in one .exe file.
+
+Primary goal of this project are use of procedural graphic, Model-View-Control pattern, embedded resources and GDI+ only.
+
+![Main menu](/doc/mainmenu002.png)
+
+Cursor keys or WASD to move.<br/>
+Press ESCAPE to select another level.<br/>
+Ctrl+, Ctrl- change size of game window (Numpads +- does the same)
 
 ![Ingame screen](/doc/ingame001.png)
-
-Cursor keys or WASD to move. Press ESCAPE to go to the main menu.
-
 
 ## Thanks to
 
 ZipStorer, by Jaime Olivares<br/>
 http://github.com/jaime-olivares/zipstorer
 
-S. V. Belyaev<br/>
+Rabbit_ levels by Thinking Rabbit, Japan.
+
+SVB_ levels by Belyaev S. V.<br/>
 http://svb-sokoban.narod.ru
 
-Evgeny Grigoriev<br/>
+GRIGoRusha_ levels by Evgeny Grigoriev<br/>
 http://grigr.narod.ru
 
 # Level Map
-Level is a text file with CRLF line ending. First line is a name of the level. Next lines are level blocks. Level terminates with empty line (just CRLF only).
 
-Cells legend (without quotes):<br/>
+The game contains over 500 levels.
+
+![Select level](/doc/selectlevel003.png)
+
+Level is a text file with CRLF line ending. First line is a name of the level. Next lines contains blocks of level. Level map must ends with empty line (CRLF only).
+
+Legend (without quotes):<br/>
 '_', ' ' Empty<br/>
 '#$' Wall<br/>
 '.' Plate<br/>
@@ -31,10 +43,10 @@ Cells legend (without quotes):<br/>
 
 ## Example 'Rabbit 01'
 
-Do not forget that levels separated each other with CRLF (empty line).
+Do not forget that levels are separated each other by CRLF (empty line).
 
-Rabbit 01<br/>
-<pre>____#####__________
+<pre>Rabbit 01
+____#####__________
 ____#___#__________
 ____#$__#__________
 __###__$##_________
@@ -45,8 +57,14 @@ __#__$_$_#_________
 #####_###_#@##__..#
 ____#_____#########
 ____#######________
+
 </pre>
 
 ## Levels Pack
 
-Levels contains in one text file with predefined name 'levels.pack'. You can pack it into zip-file with the same name. Game automatically recognizes when you use zip or plain text file.
+Levels are contains in text file with predefined name 'levels.pack'. You can pack file into a .zip file with the same name. Game will automatically recognize zipped files.
+
+# Command-line
+
+Sokoban.exe<br>
+Sokoban.exe userDefinedLevels.pack

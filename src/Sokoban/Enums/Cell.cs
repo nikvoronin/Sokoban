@@ -1,6 +1,6 @@
 ﻿namespace Sokoban
 {
-    public enum Cells : byte
+    public enum Cell : byte
     {
         Empty = 0,
         Barrel = 1,

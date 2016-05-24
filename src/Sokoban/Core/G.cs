@@ -4,6 +4,7 @@ namespace Sokoban
 {
     public sealed class G
     {
+        public const string APP_NAME = "Sokoban";
         public const string EMBEDDED_LEVELS = "Sokoban.levels.pack";
         public const string EMBEDDED_MENU = "Sokoban.menu.pack";
 
@@ -12,9 +13,10 @@ namespace Sokoban
         private G() { }
 
         public int Zoom = 20;
-        public int CurrentLevelNo = -1;
+        public int LevelNo = -1;
+        public Level Level { get { return LevelNo > -1 ? Levels[LevelNo] : null; }}
 
-        public readonly List<LevelData> Levels = new List<LevelData>();
-        public LevelData StartMenu;
+        public readonly List<Level> Levels = new List<Level>();
+        public Level SplashLevel;
     }
 }

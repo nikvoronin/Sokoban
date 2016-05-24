@@ -16,12 +16,12 @@ namespace Sokoban
         public static extern bool ReleaseCapture();
 
         View view;
-        Warehouse warehouse;
-        bool avoidMainMenu = false;
+        Logic logic;
+        bool avoidSplashLevel = false;
 
         public GameForm(bool goSelectLevel = false)
         {
-            avoidMainMenu = goSelectLevel;
+            avoidSplashLevel = goSelectLevel;
 
             SetStyle(
                 ControlStyles.OptimizedDoubleBuffer |
@@ -33,24 +33,28 @@ namespace Sokoban
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            if (avoidMainMenu)
-                ShowSelectLevelMenu();
+            if (avoidSplashLevel)
+                Show_SelectLevelForm();
             else
-                ShowMainMenu();
+                Show_SplashLevel();
         }
 
-        private void ShowMainMenu()
+        private void Show_SplashLevel()
         {
-            warehouse = new Warehouse(G.I.StartMenu);
-            view = new View(warehouse);
+            logic = new Logic(G.I.SplashLevel);
+            view = new View(logic);
 
-            UpdateGameField();
+            Resize_GameField();
         }
 
-        private void UpdateGameField()
+        private void Resize_GameField()
         {
+            Text = G.I.LevelNo == -1 ?
+                    G.APP_NAME :
+                    G.I.Level.Name + " — " + G.APP_NAME;
+
             view.Resize(G.I.Zoom);
-            view.Update();
+            view.DrawField();
 
             Width = view.Width;
             Height = view.Height;
@@ -58,38 +62,37 @@ namespace Sokoban
             Invalidate();
         }
 
-        private void ShowSelectLevelMenu()
+        private void Show_SelectLevelForm()
         {
-            MenuForm menuForm = new MenuForm(warehouse);
+            MenuForm menuForm = new MenuForm(logic);
             DialogResult result = menuForm.ShowDialog();
             switch (result)
             {
-                case DialogResult.No:       // continue current level
-                    UpdateGameField();
-                    break;
+                //case DialogResult.No:     // continue current level
+                //    break;
 
                 case DialogResult.Cancel:   // close app
                     Close();
                     break;
 
                 case DialogResult.OK:       // start thinking over new level
-                    warehouse = new Warehouse(G.I.Levels[G.I.CurrentLevelNo]);
-                    view = new View(warehouse);
-
-                    UpdateGameField();
+                    logic = new Logic(G.I.Level);
+                    view = new View(logic);
                     break;
             }
+
+            Resize_GameField();
         }
 
-        private void DoKeys(KeyEventArgs e)
+        private void Do_Keys(KeyEventArgs e)
         {
             Point dir = Point.Empty;
 
             switch (e.KeyCode)
             {
                 case Keys.Escape:
-                    if (G.I.CurrentLevelNo > -1)
-                        ShowSelectLevelMenu();
+                    if (G.I.LevelNo > -1)
+                        Show_SelectLevelForm();
                     break;
 
                 case Keys.Up:
@@ -112,7 +115,7 @@ namespace Sokoban
                     if (e.Control)
                     {
                         G.I.Zoom += 1;
-                        UpdateGameField();
+                        Resize_GameField();
                     }
                     break;
                 case Keys.OemMinus:
@@ -120,59 +123,57 @@ namespace Sokoban
                     {
                         if (G.I.Zoom > 10)
                             G.I.Zoom -= 1;
-                        UpdateGameField();
+                        Resize_GameField();
                     }
                     break;
                 case Keys.Add:
                     G.I.Zoom += 1;
-                    UpdateGameField();
+                    Resize_GameField();
                     break;
                 case Keys.Subtract:
                     if (G.I.Zoom > 10)
                         G.I.Zoom -= 1;
-                    UpdateGameField();
+                    Resize_GameField();
                     break;
             }
 
             if (dir.X != 0 || dir.Y != 0)
             {
-                Warehouse.WhatHappend whatsap = warehouse.MovePlayer(dir);
+                WhatHappend whatsap = logic.MovePlayer(dir);
 
-                view.Update();
+                view.UpdateCells();
                 Invalidate();
 
                 switch(whatsap)
                 {
-                    case Warehouse.WhatHappend.Win:
-                        if (G.I.CurrentLevelNo == -1)
-                            ShowSelectLevelMenu();
+                    case WhatHappend.Win:
+                        if (G.I.LevelNo == -1)
+                            Show_SelectLevelForm();
                         else
-                            LevelDone();
+                            Show_LevelDone();
                         break;
 
-                    case Warehouse.WhatHappend.Nothing:
-                        if (warehouse.PlayerX > 38)
+                    case WhatHappend.Nothing:
+                        if (logic.PlayerHx > 38)
                             Close();
                         break;
                 }
             }
         }
 
-        private void LevelDone()
+        private void Show_LevelDone()
         {
-            if (G.I.CurrentLevelNo > -1)
+            if (G.I.LevelNo > -1)
                 MessageBox.Show("Level done!");
 
-            G.I.CurrentLevelNo = -1;
-            ShowMainMenu();
+            G.I.LevelNo = -1;
+            Show_SplashLevel();
         }
 
         private void MainForm_Paint(object sender, PaintEventArgs e)
         {
             if (view.Canvas != null)
-            {
                 e.Graphics.DrawImageUnscaled(view.Canvas, 0, 0);
-            }
         }
 
         private void MainForm_MouseDown(object sender, MouseEventArgs e)
@@ -186,7 +187,7 @@ namespace Sokoban
 
         private void GameForm_KeyDown(object sender, KeyEventArgs e)
         {
-            DoKeys(e);
+            Do_Keys(e);
         }
     }
 }

@@ -31,17 +31,22 @@
             System.Windows.Forms.Label label1;
             System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
             System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+            System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
+            System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel5;
             this.helpLabel = new System.Windows.Forms.Label();
             this.selectLevelComboBox = new System.Windows.Forms.ComboBox();
             this.goButton = new System.Windows.Forms.Button();
             this.continueButton = new System.Windows.Forms.Button();
             this.mainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.stepsToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.doneToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.timeToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.quitButton = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
             toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
+            toolStripStatusLabel5 = new System.Windows.Forms.ToolStripStatusLabel();
             this.mainStatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,12 +67,28 @@
             // 
             // toolStripStatusLabel2
             // 
-            toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            toolStripStatusLabel2.Size = new System.Drawing.Size(207, 25);
+            toolStripStatusLabel2.Size = new System.Drawing.Size(106, 25);
             toolStripStatusLabel2.Spring = true;
             toolStripStatusLabel2.Text = "Sokoban";
             toolStripStatusLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // toolStripStatusLabel4
+            // 
+            toolStripStatusLabel4.AutoSize = false;
+            toolStripStatusLabel4.Margin = new System.Windows.Forms.Padding(10, 3, 0, 2);
+            toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            toolStripStatusLabel4.Size = new System.Drawing.Size(48, 25);
+            toolStripStatusLabel4.Text = "Done:";
+            // 
+            // toolStripStatusLabel5
+            // 
+            toolStripStatusLabel5.AutoSize = false;
+            toolStripStatusLabel5.Margin = new System.Windows.Forms.Padding(10, 3, 0, 2);
+            toolStripStatusLabel5.Name = "toolStripStatusLabel5";
+            toolStripStatusLabel5.Size = new System.Drawing.Size(48, 25);
+            toolStripStatusLabel5.Text = "Time:";
             // 
             // helpLabel
             // 
@@ -86,13 +107,13 @@
             this.selectLevelComboBox.FormattingEnabled = true;
             this.selectLevelComboBox.Location = new System.Drawing.Point(52, 21);
             this.selectLevelComboBox.Name = "selectLevelComboBox";
-            this.selectLevelComboBox.Size = new System.Drawing.Size(237, 21);
+            this.selectLevelComboBox.Size = new System.Drawing.Size(261, 21);
             this.selectLevelComboBox.TabIndex = 1;
             // 
             // goButton
             // 
             this.goButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.goButton.Location = new System.Drawing.Point(295, 19);
+            this.goButton.Location = new System.Drawing.Point(319, 19);
             this.goButton.Name = "goButton";
             this.goButton.Size = new System.Drawing.Size(75, 23);
             this.goButton.TabIndex = 1;
@@ -104,7 +125,7 @@
             // 
             this.continueButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.continueButton.Enabled = false;
-            this.continueButton.Location = new System.Drawing.Point(295, 48);
+            this.continueButton.Location = new System.Drawing.Point(319, 48);
             this.continueButton.Name = "continueButton";
             this.continueButton.Size = new System.Drawing.Size(75, 23);
             this.continueButton.TabIndex = 4;
@@ -117,12 +138,14 @@
             this.mainStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             toolStripStatusLabel1,
             this.stepsToolStripStatusLabel,
-            this.toolStripStatusLabel4,
+            toolStripStatusLabel4,
             this.doneToolStripStatusLabel,
+            toolStripStatusLabel5,
+            this.timeToolStripStatusLabel,
             toolStripStatusLabel2});
             this.mainStatusStrip.Location = new System.Drawing.Point(0, 123);
             this.mainStatusStrip.Name = "mainStatusStrip";
-            this.mainStatusStrip.Size = new System.Drawing.Size(384, 30);
+            this.mainStatusStrip.Size = new System.Drawing.Size(408, 30);
             this.mainStatusStrip.TabIndex = 7;
             // 
             // stepsToolStripStatusLabel
@@ -131,34 +154,44 @@
             this.stepsToolStripStatusLabel.Size = new System.Drawing.Size(17, 25);
             this.stepsToolStripStatusLabel.Text = "0";
             // 
-            // toolStripStatusLabel4
-            // 
-            this.toolStripStatusLabel4.AutoSize = false;
-            this.toolStripStatusLabel4.Margin = new System.Windows.Forms.Padding(10, 3, 0, 2);
-            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            this.toolStripStatusLabel4.Size = new System.Drawing.Size(48, 25);
-            this.toolStripStatusLabel4.Text = "Done:";
-            // 
             // doneToolStripStatusLabel
             // 
             this.doneToolStripStatusLabel.Name = "doneToolStripStatusLabel";
             this.doneToolStripStatusLabel.Size = new System.Drawing.Size(39, 25);
             this.doneToolStripStatusLabel.Text = "0 (0)";
             // 
+            // timeToolStripStatusLabel
+            // 
+            this.timeToolStripStatusLabel.Name = "timeToolStripStatusLabel";
+            this.timeToolStripStatusLabel.Size = new System.Drawing.Size(67, 25);
+            this.timeToolStripStatusLabel.Text = "0 0:00:00";
+            // 
+            // quitButton
+            // 
+            this.quitButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.quitButton.Location = new System.Drawing.Point(319, 88);
+            this.quitButton.Name = "quitButton";
+            this.quitButton.Size = new System.Drawing.Size(75, 23);
+            this.quitButton.TabIndex = 4;
+            this.quitButton.Text = "Quit";
+            this.quitButton.UseVisualStyleBackColor = true;
+            this.quitButton.Click += new System.EventHandler(this.quitButton_Click);
+            // 
             // MenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(384, 153);
+            this.ClientSize = new System.Drawing.Size(408, 153);
             this.Controls.Add(this.helpLabel);
             this.Controls.Add(this.mainStatusStrip);
+            this.Controls.Add(this.quitButton);
             this.Controls.Add(this.continueButton);
             this.Controls.Add(this.goButton);
             this.Controls.Add(label1);
             this.Controls.Add(this.selectLevelComboBox);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(400, 193);
+            this.MinimumSize = new System.Drawing.Size(424, 193);
             this.Name = "MenuForm";
             this.Text = "Sokoban";
             this.Load += new System.EventHandler(this.MenuForm_Load);
@@ -175,8 +208,9 @@
         private System.Windows.Forms.Button continueButton;
         private System.Windows.Forms.StatusStrip mainStatusStrip;
         private System.Windows.Forms.ToolStripStatusLabel stepsToolStripStatusLabel;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
         private System.Windows.Forms.ToolStripStatusLabel doneToolStripStatusLabel;
         private System.Windows.Forms.Label helpLabel;
+        private System.Windows.Forms.Button quitButton;
+        private System.Windows.Forms.ToolStripStatusLabel timeToolStripStatusLabel;
     }
 }

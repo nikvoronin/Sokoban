@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Sokoban
 {
-    public class LevelLoader
+    public static class Loader
     {
         private static bool IsFilePacked(string name)
         {
@@ -31,9 +31,9 @@ namespace Sokoban
             return readed == 2 && buffer[0] == 'P' && buffer[1] == 'K';
         }
 
-        public static List<LevelData> LoadPack(Stream stream)
+        public static List<Level> LoadPack(Stream stream)
         {
-            List<LevelData> levels = new List<LevelData>();
+            List<Level> levels = new List<Level>();
 
             TextReader reader = new StreamReader(stream);
 
@@ -50,10 +50,9 @@ namespace Sokoban
                         string rawMap = builder.ToString();
 
                         if (string.IsNullOrEmpty(name))
-                        {
                             name = "RND" + DateTime.Now.Ticks.ToString();
-                        }
-                        LevelData newLevel = new LevelData(name, rawMap);
+
+                        Level newLevel = new Level(name, rawMap);
                         levels.Add(newLevel);
 
                         name = "";
