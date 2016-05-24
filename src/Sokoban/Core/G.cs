@@ -12,7 +12,6 @@ namespace Sokoban
         public static G I { get { return _instance; } }
         private G() { }
 
-        public int Zoom = 20;
         public int LevelNo = -1;
         public Level Level { get { return LevelNo > -1 ? Levels[LevelNo] : null; }}
 

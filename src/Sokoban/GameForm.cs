@@ -15,6 +15,7 @@ namespace Sokoban
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
 
+        int cellSizePx = 20;
         View view;
         Logic logic;
         bool avoidSplashLevel = false;
@@ -44,16 +45,16 @@ namespace Sokoban
             logic = new Logic(G.I.SplashLevel);
             view = new View(logic);
 
-            Resize_GameField();
+            Update_GameField();
         }
 
-        private void Resize_GameField()
+        private void Update_GameField()
         {
             Text = G.I.LevelNo == -1 ?
                     G.APP_NAME :
                     G.I.Level.Name + " — " + G.APP_NAME;
 
-            view.Resize(G.I.Zoom);
+            view.Resize(cellSizePx);
             view.DrawField();
 
             Width = view.Width;
@@ -81,7 +82,7 @@ namespace Sokoban
                     break;
             }
 
-            Resize_GameField();
+            Update_GameField();
         }
 
         private void Do_Keys(KeyEventArgs e)
@@ -114,26 +115,25 @@ namespace Sokoban
                 case Keys.Oemplus:
                     if (e.Control)
                     {
-                        G.I.Zoom += 1;
-                        Resize_GameField();
+                        cellSizePx++;
+                        Update_GameField();
                     }
                     break;
                 case Keys.OemMinus:
                     if (e.Control)
                     {
-                        if (G.I.Zoom > 10)
-                            G.I.Zoom -= 1;
-                        Resize_GameField();
+                        if (cellSizePx > 1)
+                            cellSizePx--;
+                        Update_GameField();
                     }
                     break;
                 case Keys.Add:
-                    G.I.Zoom += 1;
-                    Resize_GameField();
+                    cellSizePx++;
+                    Update_GameField();
                     break;
                 case Keys.Subtract:
-                    if (G.I.Zoom > 10)
-                        G.I.Zoom -= 1;
-                    Resize_GameField();
+                    cellSizePx--;
+                    Update_GameField();
                     break;
             }
 

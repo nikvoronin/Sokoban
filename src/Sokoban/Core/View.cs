@@ -18,7 +18,6 @@ namespace Sokoban
         Font font = null;
         int z = 20;
         int shift = 5;
-        public int CellSizePx { get { return z; } }
         readonly Logic logic;
 
         public Image Canvas { get { return screen; } }        
