@@ -1,6 +1,6 @@
 # Sokoban
 
-This is small (about 50Kb) [Sokoban](https://en.wikipedia.org/wiki/Sokoban) game written in C# with procedurally generated graphics. Game and levels are packed in one .exe file.
+This is a small (about 50Kb) [Sokoban](https://en.wikipedia.org/wiki/Sokoban) game written in C# with procedurally generated graphics. Game and levels are packed in one .exe file.
 
 Primary goal of this project are use of procedural graphic, Model-View-Control pattern, embedded resources and GDI+ only.
 
@@ -27,19 +27,20 @@ http://grigr.narod.ru
 
 # Level Map
 
-The game contains over 500 levels.
+The game contains about 838 levels.
 
 ![Select level](/doc/selectlevel003.png)
 
 Level is a text file with CRLF line ending. First line is a name of the level. Next lines contains blocks of level. Level map must ends with empty line (CRLF only).
 
 Legend (without quotes):<br/>
-'_', ' ' Empty<br/>
-'#$' Wall<br/>
-'.' Plate<br/>
-'*' Barrel on plate<br/> 
-'@' Start point<br/>
-'+' Start point on plate
+_ ' ' underscore or space for empty cells.<br/>
+# Wall<br/>
+$ Barrel or box<br/>
+. Plate<br/>
+* Barrel on the plate<br/> 
+@ Player's start point<br/>
++ Player starts over the plate
 
 ## Example 'Rabbit 01'
 
@@ -62,7 +63,7 @@ ____#######________
 
 ## Levels Pack
 
-Levels are contains in text file with predefined name 'levels.pack'. You can pack file into a .zip file with the same name. Game will automatically recognize zipped files.
+Levels are contained in a single text file with the predefined name 'levels.pack'. You can pack file into a .zip file with the same name. Game will automatically recognize zipped files.
 
 # Command-line
 

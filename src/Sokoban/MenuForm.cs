@@ -5,11 +5,10 @@ namespace Sokoban
 {
     public partial class MenuForm : Form
     {
-        Logic logic;
-        public MenuForm(Logic gameLogic)
+        public MenuForm()
         {
-            logic = gameLogic;
             InitializeComponent();
+            UpdateElapsedTime();
         }
 
         private void continueButton_Click(object sender, EventArgs e)
@@ -20,7 +19,7 @@ namespace Sokoban
 
         private void goButton_Click(object sender, EventArgs e)
         {
-            G.I.LevelNo = selectLevelComboBox.SelectedIndex;
+            Tag = selectLevelComboBox.SelectedValue;
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -33,46 +32,68 @@ namespace Sokoban
 
         private void MenuForm_Load(object sender, EventArgs e)
         {
-            Text = G.I.LevelNo == -1 ?
-                    G.APP_NAME :
-                    G.I.Level.Name + " — " + G.APP_NAME;
+            if (G.I.Level != null)
+                Text = string.IsNullOrEmpty(G.I.Level.Name.Trim()) ?
+                        G.APP_NAME :
+                        G.I.Level.Name + " — " + G.APP_NAME;
 
-            if (null != logic)
+            if (G.I.Logic != null)
             {
-                stepsToolStripStatusLabel.Text = logic.Steps.ToString();
-                doneToolStripStatusLabel.Text = string.Format("{0} ({1})", logic.InPlace, logic.Plates);
-                TimeSpan span = TimeSpan.FromTicks(DateTime.Now.Ticks - logic.StartTime.Ticks);
-                timeToolStripStatusLabel.Text =
-                    string.Format("{0}{1}:{2}:{3}",
-                        span.Days > 0 ? span.Days.ToString() + " " : "",
-                        span.Hours,
-                        span.Minutes.ToString("00"),
-                        span.Seconds.ToString("00")
-                        );
+                stepsToolStripStatusLabel.Text = G.I.Logic.Steps.ToString();
+                doneToolStripStatusLabel.Text =
+                    string.Format( "{0} ({1})",
+                        G.I.Logic.InPlace,
+                        G.I.Logic.Plates);
             }
 
             helpLabel.Text = @"Cursor keys or WASD to move.
 ESCAPE to select another level.
 Ctrl+, Ctrl- resize window.";
 
-            foreach (Level level in G.I.Levels)
-            {
-                selectLevelComboBox.Items.Add(level.Name);
-            }
+            selectLevelComboBox.DataSource = G.I.Levels;
 
-            continueButton.Enabled = G.I.LevelNo > -1;
-            if (G.I.LevelNo > -1)
-            {
-                selectLevelComboBox.SelectedIndex = G.I.LevelNo;
-            }
+            continueButton.Enabled = !G.I.IsSplashLevel;
+
+            if (G.I.Level != null)
+                selectLevelComboBox.SelectedItem = G.I.Level;
             else
-            {
                 if (selectLevelComboBox.Items.Count > 0)
-                {
                     selectLevelComboBox.SelectedIndex = 0;
-                    G.I.LevelNo = 0;
-                }
+        }
+
+        private void UpdateElapsedTime()
+        {
+            timeToolStripStatusLabel.Text = G.I.Logic?.ElapsedTimeLongString ?? "";
+        }
+
+        private void clockTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateElapsedTime();
+        }
+
+        private class ComboboxItem
+        {
+            public ComboboxItem(Level level)
+            {
+                Text = level.Name;
+                Value = level;
             }
+            public string Text { get; set; }
+            public Level Value { get; set; }
+            public override string ToString() { return Text; }
+        }
+
+        private void MenuForm_Shown(object sender, EventArgs e)
+        {
+            if (G.I.IsSplashLevel)
+                selectLevelComboBox.Focus();
+        }
+
+        private void selectLevelComboBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+                if (selectLevelComboBox.SelectedValue != null)
+                    goButton_Click(sender, EventArgs.Empty);
         }
     }
 }

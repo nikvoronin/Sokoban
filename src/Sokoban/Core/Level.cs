@@ -95,6 +95,11 @@ namespace Sokoban
 
                 y++;
             } // foreach lines
-        } // constructor
+        } // ctor
+
+        public override string ToString()
+        {
+            return Name;
+        }
     } // class 
 }

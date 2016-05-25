@@ -15,9 +15,7 @@ namespace Sokoban
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
 
-        int cellSizePx = 20;
-        View view;
-        Logic logic;
+        int cellSizePx = 25;
         bool avoidSplashLevel = false;
 
         public GameForm(bool goSelectLevel = false)
@@ -42,31 +40,31 @@ namespace Sokoban
 
         private void Show_SplashLevel()
         {
-            logic = new Logic(G.I.SplashLevel);
-            view = new View(logic);
-
+            closeLabel.Visible = true;
+            G.I.StartSplashLevel();
             Update_GameField();
         }
 
         private void Update_GameField()
         {
-            Text = G.I.LevelNo == -1 ?
+            Text = string.IsNullOrEmpty(G.I.Level.Name.Trim()) ?
                     G.APP_NAME :
                     G.I.Level.Name + " — " + G.APP_NAME;
 
-            view.Resize(cellSizePx);
-            view.DrawField();
+            G.I.View.Resize(cellSizePx);
+            G.I.View.DrawField();
+            G.I.View.DrawPlayer(Point.Empty);
 
-            Width = view.Width;
-            Height = view.Height;
+            Width = G.I.View.Width;
+            Height = G.I.View.Height;
 
             Invalidate();
         }
 
         private void Show_SelectLevelForm()
         {
-            MenuForm menuForm = new MenuForm(logic);
-            DialogResult result = menuForm.ShowDialog();
+            MenuForm menuForm = new MenuForm();
+            DialogResult result = menuForm.ShowDialog(this);
             switch (result)
             {
                 //case DialogResult.No:     // continue current level
@@ -77,12 +75,15 @@ namespace Sokoban
                     break;
 
                 case DialogResult.OK:       // start thinking over new level
-                    logic = new Logic(G.I.Level);
-                    view = new View(logic);
+                    Level level = menuForm.Tag as Level;
+                    if (level != null)
+                    {
+                        closeLabel.Visible = false;
+                        G.I.StartLevel(level);
+                        Update_GameField();
+                    }
                     break;
             }
-
-            Update_GameField();
         }
 
         private void Do_Keys(KeyEventArgs e)
@@ -92,7 +93,7 @@ namespace Sokoban
             switch (e.KeyCode)
             {
                 case Keys.Escape:
-                    if (G.I.LevelNo > -1)
+                    if (!G.I.IsSplashLevel)
                         Show_SelectLevelForm();
                     break;
 
@@ -122,9 +123,11 @@ namespace Sokoban
                 case Keys.OemMinus:
                     if (e.Control)
                     {
-                        if (cellSizePx > 1)
+                        if (cellSizePx > 10)
+                        {
                             cellSizePx--;
-                        Update_GameField();
+                            Update_GameField();
+                        }
                     }
                     break;
                 case Keys.Add:
@@ -132,48 +135,54 @@ namespace Sokoban
                     Update_GameField();
                     break;
                 case Keys.Subtract:
-                    cellSizePx--;
-                    Update_GameField();
+                    if (cellSizePx > 10)
+                    {
+                        cellSizePx--;
+                        Update_GameField();
+                    }
                     break;
             }
 
             if (dir.X != 0 || dir.Y != 0)
             {
-                WhatHappend whatsap = logic.MovePlayer(dir);
+                WhatHappend whatsap = G.I.Logic.MovePlayer(dir);
 
-                view.UpdateCells();
+                G.I.View.UpdateCells();
+                G.I.View.DrawPlayer(dir);
                 Invalidate();
 
                 switch(whatsap)
                 {
                     case WhatHappend.Win:
-                        if (G.I.LevelNo == -1)
+                        if (G.I.IsSplashLevel)
                             Show_SelectLevelForm();
                         else
                             Show_LevelDone();
                         break;
 
                     case WhatHappend.Nothing:
-                        if (logic.PlayerHx > 38)
+                        if (G.I.Logic.PlayerHx > 38)
                             Close();
                         break;
-                }
-            }
-        }
+                }// switch(whatsap)
+            } // if (dir.X != 0 || dir.Y != 0)
+        } // Do_Keys(KeyEventArgs e)
 
         private void Show_LevelDone()
         {
-            if (G.I.LevelNo > -1)
-                MessageBox.Show("Level done!");
+            MessageBox.Show(
+                string.Format("Amazing! You win!\nIn {0} steps\nby the time: {1}",
+                    G.I.Logic.Steps,
+                    G.I.Logic.ElapsedTimeLongString), 
+                "Level done!");
 
-            G.I.LevelNo = -1;
             Show_SplashLevel();
         }
 
         private void MainForm_Paint(object sender, PaintEventArgs e)
         {
-            if (view.Canvas != null)
-                e.Graphics.DrawImageUnscaled(view.Canvas, 0, 0);
+            if (G.I.View.Canvas != null)
+                e.Graphics.DrawImageUnscaled(G.I.View.Canvas, 0, 0);
         }
 
         private void MainForm_MouseDown(object sender, MouseEventArgs e)
@@ -188,6 +197,11 @@ namespace Sokoban
         private void GameForm_KeyDown(object sender, KeyEventArgs e)
         {
             Do_Keys(e);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

@@ -3,9 +3,9 @@ using System.Drawing;
 
 namespace Sokoban
 {
-    public class View
+    public class View : IDisposable
     {
-        const int SPRITES_COUNT = 6;
+        const int SPRITES_COUNT = 7;
         static FontFamily LETTERS_FONT_FAMILY = SystemFonts.DefaultFont.FontFamily;
         const float LETTERS_FONT_SCALE = 0.9f;
 
@@ -16,7 +16,7 @@ namespace Sokoban
         Bitmap sprites = null;
         Graphics g = null;
         Font font = null;
-        int z = 20;
+        int z;
         int shift = 5;
         readonly Logic logic;
 
@@ -33,8 +33,10 @@ namespace Sokoban
         {
             if (screen != null)
             {
+                font.Dispose();
                 screen.Dispose();
                 sprites.Dispose();
+                g.Dispose();
             }
 
             z = cellSizePx < 10 ? 10 : cellSizePx;
@@ -68,6 +70,7 @@ namespace Sokoban
             int dd = z / 15 | 1;
             gs.FillRectangle(Brushes.Red, sx, 0, z, z);
             Pen widePen = new Pen(Brushes.DarkRed, dd);
+
             gs.DrawLine(widePen, sx, 0, sx + z, 0);
             gs.DrawLine(widePen, sx, z / 2, sx + z, z / 2);
 
@@ -108,12 +111,15 @@ namespace Sokoban
 
             // barrel on plate
             sx += z;
-            gs.FillRectangle(Brushes.DarkGoldenrod, sx + 1, 1, z - 3, z - 3);
-            gs.DrawRectangle(Pens.Yellow, sx + 1, 1, z - 3, z - 3);
+            int bpShift = z / 20;
+            if (bpShift < 1)
+                bpShift = 1;
+            gs.FillRectangle(Brushes.DarkGoldenrod, sx + bpShift, bpShift, z - 1 - bpShift * 2, z - 1 - bpShift * 2);
+            gs.DrawRectangle(Pens.Yellow, sx + bpShift, bpShift, z - 1 - bpShift * 2, z - 1 - bpShift * 2);
             int d = z / 10 | 1;
             Pen fatPen = new Pen(Brushes.Gold, d);
-            gs.DrawLine(fatPen, sx + 2, 2, sx + z - 3, z - 3);
-            gs.DrawLine(fatPen, sx + 2, z - 3, sx + z - 3, 2);
+            gs.DrawLine(fatPen, sx + 2 + bpShift, 2 + bpShift, sx + z - 3 - bpShift, z - 3 - bpShift);
+            gs.DrawLine(fatPen, sx + 2 + bpShift, z - 2 - bpShift, sx + z - 2 - bpShift, 2 + bpShift);
 
             // player
             sx += z;
@@ -122,8 +128,20 @@ namespace Sokoban
                 // tail
             gs.FillEllipse(Brushes.Blue, sx, z - z / 2, z / 2, z / 2);
                 // eyes
-            gs.FillEllipse(Brushes.White, sx + z / 3 + 1, z / 3, z / 5, z / 5);
-            gs.FillEllipse(Brushes.White, sx + z / 3 * 2 + 1, z / 3, z / 5, z / 5);
+            int eyesShift = z / 20;
+            gs.FillEllipse(Brushes.White, sx + z / 3 + eyesShift, z / 3, z / 5, z / 5);
+            gs.FillEllipse(Brushes.White, sx + z / 3 * 2 + eyesShift, z / 3, z / 5, z / 5);
+
+            // flipped player 
+            Bitmap mirrored = new Bitmap(z, z, gs);
+            Rectangle srcRect = new Rectangle(sx, 0, z, z);
+            Graphics gm = Graphics.FromImage(mirrored);
+            gm.DrawImage(sprites,
+                0, 0,
+                srcRect, GraphicsUnit.Pixel);
+            mirrored.RotateFlip(RotateFlipType.RotateNoneFlipX);
+            sx += z;
+            gs.DrawImageUnscaled(mirrored, sx, 0);
         }
 
         public void DrawCell(int hx, int vy)
@@ -180,30 +198,29 @@ namespace Sokoban
                 }
         } // DrawCell(int hx, int vy)
 
-        public void DrawPlayer()
+        public void DrawPlayer(Point dir)
         {
             if (g == null) { return; }
 
             DrawCell(logic.PlayerHx, logic.PlayerVy);
 
-            Rectangle srcRect = new Rectangle(0, 0, z, z);
+            Rectangle srcRect =
+                logic.PlayerDir.X > -1 ?
+                    new Rectangle(z * 5, 0, z, z) :
+                    new Rectangle(z * 6, 0, z, z);
 
-            srcRect.X = z * 5;
             g.DrawImage(
                 sprites,
                 shift + logic.PlayerHx * z, shift + logic.PlayerVy * z,
                 srcRect, GraphicsUnit.Pixel);
         }
 
-        public void UpdateCells(bool updatePlayer = true)
+        public void UpdateCells()
         {
             if (g == null) { return; }
 
             foreach(Point p in logic.CellsChanged)
                 DrawCell(p.X, p.Y);
-
-            if (updatePlayer)
-                DrawPlayer();
         }
 
         public void DrawField()
@@ -219,8 +236,23 @@ namespace Sokoban
             for (int vy = 0; vy < cvy; vy++)
                 for (int hx = 0; hx < chx; hx++)
                     DrawCell(hx, vy);
+        }
 
-            DrawPlayer();
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                screen.Dispose();
+                sprites.Dispose();
+                font.Dispose();
+                g.Dispose();
+            }
         }
     } // class
 }

@@ -4,11 +4,10 @@
 
 /bin/Debug
 /src/.vs
-/src/Sokoban/obj/Debug
+/src/Sokoban/obj
 /bin/Release/Sokoban.vshost.exe.manifest
 /bin/Release/Sokoban.vshost.exe.config
 /bin/Release/Sokoban.vshost.exe
-/bin/Release/Sokoban.pdb
 /bin/Release/Sokoban.exe.config
-/src/Sokoban/obj/Release
+*.pdb
 *.user

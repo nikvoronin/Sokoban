@@ -28,7 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.closeLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
+            // 
+            // closeLabel
+            // 
+            this.closeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.closeLabel.AutoSize = true;
+            this.closeLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.closeLabel.ForeColor = System.Drawing.Color.Gray;
+            this.closeLabel.Location = new System.Drawing.Point(265, 3);
+            this.closeLabel.Name = "closeLabel";
+            this.closeLabel.Size = new System.Drawing.Size(16, 15);
+            this.closeLabel.TabIndex = 0;
+            this.closeLabel.Text = "X";
+            this.closeLabel.Click += new System.EventHandler(this.label1_Click);
             // 
             // GameForm
             // 
@@ -36,6 +50,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.closeLabel);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "GameForm";
@@ -45,10 +60,13 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Label closeLabel;
     }
 }
 

@@ -6,11 +6,14 @@ namespace Sokoban
 {
     public class Logic
     {
-        public readonly Level LevelMap = null; // template of the level
+        public readonly Level LevelMap = null;  // template of the level
         public readonly DateTime StartTime;
-        Cell[,] cells = null;             // current instance of level, editable
+        Cell[,] cells = null;                   // current instance of level, editable
+
         int playerHx = 0;
         int playerVy = 0;
+        Point playerDir = Point.Empty;
+
         int steps = 0;
         int inPlace = 0;
         int plates = 0;
@@ -20,6 +23,7 @@ namespace Sokoban
         public int InPlace  { get { return inPlace; } }
         public int PlayerHx  { get { return playerHx; } }
         public int PlayerVy  { get { return playerVy; } }
+        public Point PlayerDir { get { return playerDir; } }
 
         public readonly List<Point> CellsChanged = new List<Point>();
 
@@ -114,7 +118,23 @@ namespace Sokoban
 
             CellsChanged.Add(new Point(fromHx, fromVy));
             CellsChanged.Add(new Point(toHx, toVy));
+
             return result;
+        }
+
+        public string ElapsedTimeLongString
+        {
+            get
+            {
+                TimeSpan span = TimeSpan.FromTicks(DateTime.Now.Ticks - StartTime.Ticks);
+                return
+                    string.Format("{0}{1}:{2}:{3}",
+                        span.Days > 0 ? span.Days.ToString() + "d " : "",
+                        span.Hours,
+                        span.Minutes.ToString("00"),
+                        span.Seconds.ToString("00")
+                        );
+            }
         }
 
         public WhatHappend MovePlayer(Point dir)
@@ -146,6 +166,12 @@ namespace Sokoban
                     steps++;
                 }
             }
+
+            if (dir.X != 0)
+                playerDir.X = dir.X;
+
+            if (dir.Y != 0)
+                playerDir.Y = dir.Y;
 
             if (inPlace == plates)
                 result = WhatHappend.Win;

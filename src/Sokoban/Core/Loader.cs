@@ -43,25 +43,22 @@ namespace Sokoban
             StringBuilder builder = new StringBuilder();
             while ((lineBuffer = reader.ReadLine()) != null)
             {
-                if (lineBuffer.Trim().Length < 1)
+                if (blockNo == 1)
                 {
-                    if (blockNo == 1)
+                    if (lineBuffer.Trim().Length < 1)
                     {
                         string rawMap = builder.ToString();
-
-                        if (string.IsNullOrEmpty(name))
-                            name = "RND" + DateTime.Now.Ticks.ToString();
 
                         Level newLevel = new Level(name, rawMap);
                         levels.Add(newLevel);
 
                         name = "";
                         builder.Clear();
-                    }
 
-                    blockNo = 0;
-                    continue;
-                }
+                        blockNo = 0;
+                        continue;
+                    } // if (lineBuffer.Trim().Length < 1)
+                } // if (blockNo == 1)
 
                 switch (blockNo)
                 {
@@ -73,12 +70,12 @@ namespace Sokoban
                         builder.AppendLine(lineBuffer);
                         break;
                 }
-            }
+            } // while ((lineBuffer = reader.ReadLine()) != null)
 
             reader.Close();
 
             return levels;
-        }
+        } // LoadPack(Stream stream)
 
         private static Stream Unpack(Stream packedStream)
         {
