@@ -34,13 +34,14 @@ The game contains about 838 levels.
 Level is a text file with CRLF line ending. First line is a name of the level. Next lines contains blocks of level. Level map must ends with empty line (CRLF only).
 
 Legend (without quotes):<br/>
-_ ' ' underscore or space for empty cells.<br/>
-# Wall<br/>
-$ Barrel or box<br/>
-. Plate<br/>
-* Barrel on the plate<br/> 
-@ Player's start point<br/>
+<pre>_ ' ' underscore or space for empty cells.
+# Wall
+$ Barrel or box
+. Plate
+* Barrel on the plate 
+@ Player's start point
 + Player starts over the plate
+</pre>
 
 ## Example 'Rabbit 01'
 
