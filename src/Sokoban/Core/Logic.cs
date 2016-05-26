@@ -87,9 +87,9 @@ namespace Sokoban
             return canPush;
         }
 
-        private WhatHappend MoveObject(Point dir)
+        private WhatsUp MoveObject(Point dir)
         {
-            WhatHappend result = WhatHappend.Move;
+            WhatsUp result = WhatsUp.Move;
 
             int fromHx = playerHx + dir.X;
             int fromVy = playerVy + dir.Y;
@@ -113,7 +113,7 @@ namespace Sokoban
             {
                 cells[toHx, toVy] = Cell.BarrelOnPlate;
                 inPlace++;
-                result = WhatHappend.InPlace;
+                result = WhatsUp.InPlace;
             }
 
             CellsChanged.Add(new Point(fromHx, fromVy));
@@ -137,10 +137,10 @@ namespace Sokoban
             }
         }
 
-        public WhatHappend MovePlayer(Point dir)
+        public WhatsUp MovePlayer(Point dir)
         {
             CellsChanged.Clear();
-            WhatHappend result = WhatHappend.Nothing;
+            WhatsUp result = WhatsUp.Nothing;
 
             CellsChanged.Add(new Point(playerHx, playerVy));
             if (CanPlayerMove(dir))
@@ -150,7 +150,7 @@ namespace Sokoban
                 CellsChanged.Add(new Point(playerHx, playerVy));
 
                 steps++;
-                result = WhatHappend.Step;
+                result = WhatsUp.Step;
             }
             else
             {
@@ -174,7 +174,7 @@ namespace Sokoban
                 playerDir.Y = dir.Y;
 
             if (inPlace == plates)
-                result = WhatHappend.Win;
+                result = WhatsUp.Win;
 
             return result;
         }

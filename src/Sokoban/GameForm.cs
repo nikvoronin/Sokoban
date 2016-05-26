@@ -53,7 +53,6 @@ namespace Sokoban
 
             G.I.View.Resize(cellSizePx);
             G.I.View.DrawField();
-            G.I.View.DrawPlayer(Point.Empty);
 
             Width = G.I.View.Width;
             Height = G.I.View.Height;
@@ -121,13 +120,10 @@ namespace Sokoban
                     }
                     break;
                 case Keys.OemMinus:
-                    if (e.Control)
+                    if (e.Control && cellSizePx > 10)
                     {
-                        if (cellSizePx > 10)
-                        {
-                            cellSizePx--;
-                            Update_GameField();
-                        }
+                        cellSizePx--;
+                        Update_GameField();
                     }
                     break;
                 case Keys.Add:
@@ -145,28 +141,27 @@ namespace Sokoban
 
             if (dir.X != 0 || dir.Y != 0)
             {
-                WhatHappend whatsap = G.I.Logic.MovePlayer(dir);
+                WhatsUp whatsup = G.I.Logic.MovePlayer(dir);
 
-                G.I.View.UpdateCells();
-                G.I.View.DrawPlayer(dir);
+                G.I.View.Update();
                 Invalidate();
 
-                switch(whatsap)
+                switch(whatsup)
                 {
-                    case WhatHappend.Win:
+                    case WhatsUp.Win:
                         if (G.I.IsSplashLevel)
                             Show_SelectLevelForm();
                         else
                             Show_LevelDone();
                         break;
 
-                    case WhatHappend.Nothing:
+                    case WhatsUp.Nothing:
                         if (G.I.Logic.PlayerHx > 38)
                             Close();
                         break;
-                }// switch(whatsap)
-            } // if (dir.X != 0 || dir.Y != 0)
-        } // Do_Keys(KeyEventArgs e)
+                }// switch(whatsup)
+            } // if 
+        } // Do_Keys()
 
         private void Show_LevelDone()
         {

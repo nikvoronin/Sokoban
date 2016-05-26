@@ -1,6 +1,6 @@
 ﻿namespace Sokoban
 {
-    public enum WhatHappend
+    public enum WhatsUp
     {
         Nothing,
         BarrelOnPlate,

@@ -33,10 +33,10 @@ namespace Sokoban
         {
             if (screen != null)
             {
-                font.Dispose();
-                screen.Dispose();
-                sprites.Dispose();
-                g.Dispose();
+                font?.Dispose();
+                screen?.Dispose();
+                sprites?.Dispose();
+                g?.Dispose();
             }
 
             z = cellSizePx < 10 ? 10 : cellSizePx;
@@ -87,27 +87,33 @@ namespace Sokoban
             // plate
             sx += z;
             gs.FillRectangle(Brushes.Black, sx, 0, z, z);
-            gs.FillPolygon(Brushes.DarkOrange, new Point[]
-            {
-                new Point (sx, 0 ),
-                new Point (sx + z / 4, 0 ),
-                new Point (sx, z / 4 ),
-            });
-            gs.FillPolygon(Brushes.DarkOrange, new Point[]
-            {
-                new Point (sx + z, z ),
-                new Point (sx + z, z - z / 4 ),
-                new Point (sx + z - z / 4, z ),
-            });
-            gs.FillPolygon(Brushes.DarkOrange, new Point[]
-            {
-                new Point (sx, z ),
-                new Point (sx, z - z / 4 ),
-                new Point (sx + z - z / 4, 0 ),
-                new Point (sx + z, 0 ),
-                new Point (sx + z, z / 4 ),
-                new Point (sx + z / 4, z )
-            });
+            gs.FillPolygon(
+                Brushes.DarkOrange,
+                new Point[]
+                {
+                    new Point (sx, 0 ),
+                    new Point (sx + z / 4, 0 ),
+                    new Point (sx, z / 4 ),
+                });
+            gs.FillPolygon(
+                Brushes.DarkOrange,
+                new Point[]
+                {
+                    new Point (sx + z, z ),
+                    new Point (sx + z, z - z / 4 ),
+                    new Point (sx + z - z / 4, z ),
+                });
+            gs.FillPolygon(
+                Brushes.DarkOrange,
+                new Point[]
+                {
+                    new Point (sx, z ),
+                    new Point (sx, z - z / 4 ),
+                    new Point (sx + z - z / 4, 0 ),
+                    new Point (sx + z, 0 ),
+                    new Point (sx + z, z / 4 ),
+                    new Point (sx + z / 4, z )
+                });
 
             // barrel on plate
             sx += z;
@@ -142,11 +148,11 @@ namespace Sokoban
             mirrored.RotateFlip(RotateFlipType.RotateNoneFlipX);
             sx += z;
             gs.DrawImageUnscaled(mirrored, sx, 0);
-        }
+        } // GenerateSprites()
 
         public void DrawCell(int hx, int vy)
         {
-            if (g == null) { return; }
+            if (g == null) return;
 
             Rectangle srcRect = new Rectangle(0, 0, z, z);
             Cell cell = logic.CellAt(hx, vy);
@@ -196,11 +202,11 @@ namespace Sokoban
                     string str = "" + Convert.ToChar(cell);
                     g.DrawString(str, font, Brushes.White, shift + hx * z, shift + vy * z);
                 }
-        } // DrawCell(int hx, int vy)
+        } // DrawCell()
 
-        public void DrawPlayer(Point dir)
+        public void DrawPlayer()
         {
-            if (g == null) { return; }
+            if (g == null) return;
 
             DrawCell(logic.PlayerHx, logic.PlayerVy);
 
@@ -215,17 +221,19 @@ namespace Sokoban
                 srcRect, GraphicsUnit.Pixel);
         }
 
-        public void UpdateCells()
+        public void Update()
         {
-            if (g == null) { return; }
+            if (g == null) return;
 
             foreach(Point p in logic.CellsChanged)
                 DrawCell(p.X, p.Y);
+
+            DrawPlayer();
         }
 
         public void DrawField()
         {
-            if (g == null) { return; }
+            if (g == null) return;
 
             g.Clear(COLOR_BACKGROUND);
 
@@ -236,6 +244,8 @@ namespace Sokoban
             for (int vy = 0; vy < cvy; vy++)
                 for (int hx = 0; hx < chx; hx++)
                     DrawCell(hx, vy);
+
+            DrawPlayer();
         }
 
         public void Dispose()
@@ -248,10 +258,10 @@ namespace Sokoban
         {
             if (disposing)
             {
-                screen.Dispose();
-                sprites.Dispose();
-                font.Dispose();
-                g.Dispose();
+                screen?.Dispose();
+                sprites?.Dispose();
+                font?.Dispose();
+                g?.Dispose();
             }
         }
     } // class

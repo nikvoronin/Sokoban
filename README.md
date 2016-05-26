@@ -12,18 +12,14 @@ Ctrl+, Ctrl- change size of game window (Numpads +- does the same)
 
 ![Ingame screen](/doc/ingame001.png)
 
+
 ## Thanks to
 
-ZipStorer, by Jaime Olivares<br/>
-http://github.com/jaime-olivares/zipstorer
+ZipStorer by [Jaime Olivares](https://github.com/jaime-olivares/zipstorer)<br/>
+"Rabbit" levels by [Thinking Rabbit](https://en.wikipedia.org/wiki/Thinking_Rabbit)<br/>
+"SVB" levels by [Belyaev S. V.](http://svb-sokoban.narod.ru)<br/>
+"GRIGoRusha" levels by [Evgeny Grigoriev](http://grigr.narod.ru)
 
-Rabbit_ levels by Thinking Rabbit, Japan.
-
-SVB_ levels by Belyaev S. V.<br/>
-http://svb-sokoban.narod.ru
-
-GRIGoRusha_ levels by Evgeny Grigoriev<br/>
-http://grigr.narod.ru
 
 # Level Map
 
@@ -42,6 +38,7 @@ $ Barrel or box
 @ Player's start point
 + Player starts over the plate
 </pre>
+
 
 ## Example 'Rabbit 01'
 
@@ -62,9 +59,11 @@ ____#######________
 
 </pre>
 
+
 ## Levels Pack
 
 Levels are contained in a single text file with the predefined name 'levels.pack'. You can pack file into a .zip file with the same name. Game will automatically recognize zipped files.
+
 
 # Command-line
 
