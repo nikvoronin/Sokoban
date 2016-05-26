@@ -62,7 +62,7 @@ ____#######________
 
 ## Levels Pack
 
-Levels are contained in a single text file with the predefined name 'levels.pack'. You can pack file into a .zip file with the same name. Game will automatically recognize zipped files.
+Levels are contained in a single text file. You can pack that file into a .zip archive. One .zip contains one level file. Game will automatically recognize zipped files.
 
 
 # Command-line
