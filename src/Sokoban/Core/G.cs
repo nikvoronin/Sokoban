@@ -14,8 +14,7 @@ namespace Sokoban
         public static G I { get { return _instance; } }
         private G() { }
 
-        private Level level;
-        public Level Level { get { return level; } }
+        private DateTime startTime = DateTime.Now;
         private Logic logic;
         public Logic Logic { get { return logic; } }
         private View view;
@@ -26,20 +25,38 @@ namespace Sokoban
         bool isSplashLevel = false;
         public bool IsSplashLevel { get { return isSplashLevel; } }
 
-        public void StartLevel(Level level)
+        public void Start(Level level)
         {
             isSplashLevel = false;
-            this.level = level;
-            logic = new Logic(level);
-            view = new View(logic);
+            StartLevel(level);
         }
 
         public void StartSplashLevel()
         {
             isSplashLevel = true;
-            level = splashLevel;
+            StartLevel(splashLevel);
+        }
+
+        private void StartLevel(Level level)
+        {
+            startTime = DateTime.Now;
             logic = new Logic(level);
-            view = new View(logic);
+            view = new View(level, logic);
+        }
+
+        public string ElapsedTimeLongString
+        {
+            get
+            {
+                TimeSpan span = TimeSpan.FromTicks(DateTime.Now.Ticks - startTime.Ticks);
+                return
+                    string.Format("{0}{1}:{2}:{3}",
+                        span.Days > 0 ? span.Days.ToString() + "d " : "",
+                        span.Hours,
+                        span.Minutes.ToString("00"),
+                        span.Seconds.ToString("00")
+                        );
+            }
         }
 
         public void Load(string[] args)

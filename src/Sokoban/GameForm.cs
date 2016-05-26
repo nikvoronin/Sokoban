@@ -47,9 +47,9 @@ namespace Sokoban
 
         private void Update_GameField()
         {
-            Text = string.IsNullOrEmpty(G.I.Level.Name.Trim()) ?
+            Text = string.IsNullOrEmpty(G.I.Logic.Map.Name.Trim()) ?
                     G.APP_NAME :
-                    G.I.Level.Name + " — " + G.APP_NAME;
+                    G.I.Logic.Map.Name + " — " + G.APP_NAME;
 
             G.I.View.Resize(cellSizePx);
             G.I.View.DrawField();
@@ -78,7 +78,7 @@ namespace Sokoban
                     if (level != null)
                     {
                         closeLabel.Visible = false;
-                        G.I.StartLevel(level);
+                        G.I.Start(level);
                         Update_GameField();
                     }
                     break;
@@ -168,7 +168,7 @@ namespace Sokoban
             MessageBox.Show(
                 string.Format("Amazing! You win!\nIn {0} steps\nby the time: {1}",
                     G.I.Logic.Steps,
-                    G.I.Logic.ElapsedTimeLongString), 
+                    G.I.ElapsedTimeLongString), 
                 "Level done!");
 
             Show_SplashLevel();

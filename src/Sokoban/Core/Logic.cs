@@ -4,11 +4,13 @@ using System.Drawing;
 
 namespace Sokoban
 {
+    /// <summary>
+    /// Contains and manages data (player, level's cells, statistics)
+    /// </summary>
     public class Logic
     {
-        public readonly Level LevelMap = null;  // template of the level
-        public readonly DateTime StartTime;
-        Cell[,] cells = null;                   // current instance of level, editable
+        public readonly Level Map = null;  // template of the level
+        Cell[,] cells = null;              // current instance of level, editable
 
         int playerHx = 0;
         int playerVy = 0;
@@ -16,9 +18,7 @@ namespace Sokoban
 
         int steps = 0;
         int inPlace = 0;
-        int plates = 0;
 
-        public int Plates   { get { return plates; } }
         public int Steps    { get { return steps; } }
         public int InPlace  { get { return inPlace; } }
         public int PlayerHx  { get { return playerHx; } }
@@ -27,16 +27,14 @@ namespace Sokoban
 
         public readonly List<Point> CellsChanged = new List<Point>();
 
-        public Logic(Level levelMap)
+        public Logic(Level map)
         {
-            StartTime = DateTime.Now;
             steps = 0;
-            LevelMap = levelMap;
-            cells = (Cell[,])LevelMap.Cells.Clone();
-            inPlace = LevelMap.InPlace;
-            plates  = LevelMap.TotalPlates;
-            playerHx = LevelMap.StartAt.X;
-            playerVy = LevelMap.StartAt.Y;
+            Map = map;
+            cells = (Cell[,])Map.Cells.Clone();
+            inPlace = Map.InPlace;
+            playerHx = Map.StartAt.X;
+            playerVy = Map.StartAt.Y;
         }
 
         public Cell CellAt(int hx, int vy)
@@ -51,8 +49,8 @@ namespace Sokoban
             int newX = playerHx + dir.X;
             int newY = playerVy + dir.Y;
 
-            if (newX > -1 && newX < LevelMap.CellsHx &&
-                newY > -1 && newY < LevelMap.CellsVy)
+            if (newX > -1 && newX < Map.WidthHx &&
+                newY > -1 && newY < Map.HeightVy)
             {
                 canMove =
                     cells[newX, newY] == Cell.Empty ||
@@ -72,8 +70,8 @@ namespace Sokoban
             int nextX = newX + dir.X;
             int nextY = newY + dir.Y;
 
-            if (nextX > -1 && nextX < LevelMap.CellsHx &&
-                nextY > -1 && nextY < LevelMap.CellsVy)
+            if (nextX > -1 && nextX < Map.WidthHx &&
+                nextY > -1 && nextY < Map.HeightVy)
             {
                 canPush =
                     (cells[newX, newY] == Cell.Barrel ||
@@ -122,21 +120,6 @@ namespace Sokoban
             return result;
         }
 
-        public string ElapsedTimeLongString
-        {
-            get
-            {
-                TimeSpan span = TimeSpan.FromTicks(DateTime.Now.Ticks - StartTime.Ticks);
-                return
-                    string.Format("{0}{1}:{2}:{3}",
-                        span.Days > 0 ? span.Days.ToString() + "d " : "",
-                        span.Hours,
-                        span.Minutes.ToString("00"),
-                        span.Seconds.ToString("00")
-                        );
-            }
-        }
-
         public WhatsUp MovePlayer(Point dir)
         {
             CellsChanged.Clear();
@@ -173,8 +156,11 @@ namespace Sokoban
             if (dir.Y != 0)
                 playerDir.Y = dir.Y;
 
-            if (inPlace == plates)
+            if (inPlace == Map.Plates ||
+                inPlace == Map.Barrels)
+            {
                 result = WhatsUp.Win;
+            }
 
             return result;
         }

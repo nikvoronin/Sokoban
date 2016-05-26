@@ -9,9 +9,10 @@ namespace Sokoban
         public readonly string Name = "";
         public readonly Cell[,] Cells = null;
         public readonly Point StartAt = Point.Empty;
-        public readonly int CellsHx = 0;
-        public readonly int CellsVy = 0;
-        public readonly int TotalPlates = 0;
+        public readonly int WidthHx = 0;
+        public readonly int HeightVy = 0;
+        public readonly int Plates = 0;
+        public readonly int Barrels = 0;
         public readonly int InPlace = 0;
 
         public Level(string name, string rawMap)
@@ -19,28 +20,29 @@ namespace Sokoban
             Name = name;
 
             string[] lines = rawMap.Split('\n');
-            CellsVy = lines.Length - 1;
-            if (CellsVy < 1)
+            HeightVy = lines.Length - 1;
+            if (HeightVy < 1)
                 return;
 
-            CellsHx = lines.OrderByDescending(s => s.Length).First().Length - 1;
-            Cells = new Cell[CellsHx, CellsVy];
+            WidthHx = lines.OrderByDescending(s => s.Length).First().Length - 1;
+            Cells = new Cell[WidthHx, HeightVy];
 
             int x, y = 0;
             foreach (string line in lines)
             {
-                if (y >= CellsVy)
+                if (y >= HeightVy)
                     break;
 
                 x = 0;
                 char[] chars = line.ToCharArray();
                 foreach(char ch in chars)
                 {
-                    if (x >= CellsHx)
+                    if (x >= WidthHx)
                         break;
 
                     bool strangeCell = false;
 
+                    Cells[x, y] = Cell.Empty;
                     switch (ch)
                     {
                         //empty
@@ -54,17 +56,19 @@ namespace Sokoban
                             break;
                         // barrel or box
                         case '$':
+                            Barrels++;
                             Cells[x, y] = Cell.Barrel;
                             break;
                         // plate or target
                         case '.':
-                            TotalPlates++;
+                            Plates++;
                             Cells[x, y] = Cell.Plate;
                             break;
                         // barrel on plate, box at the right place
                         case '*':
-                            TotalPlates++;
+                            Plates++;
                             InPlace++;
+                            Barrels++;
                             Cells[x, y] = Cell.BarrelOnPlate;
                             break;
                         // player starts here
@@ -74,7 +78,7 @@ namespace Sokoban
                             break;
                         // player starts here and he is over the plate
                         case '+':
-                            TotalPlates++;
+                            Plates++;
                             Cells[x, y] = Cell.Plate;
                             StartAt = new Point(x, y);
                             break;

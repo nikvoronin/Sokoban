@@ -3,6 +3,9 @@ using System.Drawing;
 
 namespace Sokoban
 {
+    /// <summary>
+    /// Draws levels
+    /// </summary>
     public class View : IDisposable
     {
         const int SPRITES_COUNT = 7;
@@ -18,15 +21,17 @@ namespace Sokoban
         Font font = null;
         int z;
         int shift = 5;
-        readonly Logic logic;
+        public readonly Logic logic;
+        public readonly Level Map = null;  // template of the level
 
         public Image Canvas { get { return screen; } }        
         public int Width { get { return screen.Width; } }
         public int Height { get { return screen.Height; } }
 
-        public View(Logic gameLogic)
+        public View(Level level, Logic logic)
         {
-            logic = gameLogic;
+            this.logic = logic;
+            Map = level;
         }
 
         public void Resize(int cellSizePx)
@@ -42,8 +47,8 @@ namespace Sokoban
             z = cellSizePx < 10 ? 10 : cellSizePx;
             shift = z / 4;
             int borderW = z / 2;
-            int w = logic.LevelMap.CellsHx * z + borderW;
-            int h = logic.LevelMap.CellsVy * z + borderW;
+            int w = Map.WidthHx * z + borderW;
+            int h = Map.HeightVy * z + borderW;
             screen = new Bitmap(w, h);
 
             font = new Font(LETTERS_FONT_FAMILY, z * LETTERS_FONT_SCALE, GraphicsUnit.Pixel);
@@ -238,8 +243,8 @@ namespace Sokoban
             g.Clear(COLOR_BACKGROUND);
 
             Rectangle srcRect = new Rectangle(0, 0, z, z);
-            int chx = logic.LevelMap.CellsHx;
-            int cvy = logic.LevelMap.CellsVy;
+            int chx = Map.WidthHx;
+            int cvy = Map.HeightVy;
 
             for (int vy = 0; vy < cvy; vy++)
                 for (int hx = 0; hx < chx; hx++)

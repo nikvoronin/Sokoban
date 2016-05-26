@@ -32,10 +32,10 @@ namespace Sokoban
 
         private void MenuForm_Load(object sender, EventArgs e)
         {
-            if (G.I.Level != null)
-                Text = string.IsNullOrEmpty(G.I.Level.Name.Trim()) ?
+            if (G.I.Logic.Map != null)
+                Text = string.IsNullOrEmpty(G.I.Logic.Map.Name.Trim()) ?
                         G.APP_NAME :
-                        G.I.Level.Name + " — " + G.APP_NAME;
+                        G.I.Logic.Map.Name + " — " + G.APP_NAME;
 
             if (G.I.Logic != null)
             {
@@ -43,7 +43,7 @@ namespace Sokoban
                 doneToolStripStatusLabel.Text =
                     string.Format( "{0} ({1})",
                         G.I.Logic.InPlace,
-                        G.I.Logic.Plates);
+                        G.I.Logic.Map.Plates);
             }
 
             helpLabel.Text = @"Cursor keys or WASD to move.
@@ -54,8 +54,8 @@ Ctrl+, Ctrl- resize window.";
 
             continueButton.Enabled = !G.I.IsSplashLevel;
 
-            if (G.I.Level != null)
-                selectLevelComboBox.SelectedItem = G.I.Level;
+            if (G.I.Logic.Map != null)
+                selectLevelComboBox.SelectedItem = G.I.Logic.Map;
             else
                 if (selectLevelComboBox.Items.Count > 0)
                     selectLevelComboBox.SelectedIndex = 0;
@@ -63,7 +63,7 @@ Ctrl+, Ctrl- resize window.";
 
         private void UpdateElapsedTime()
         {
-            timeToolStripStatusLabel.Text = G.I.Logic?.ElapsedTimeLongString ?? "";
+            timeToolStripStatusLabel.Text = G.I.ElapsedTimeLongString ?? "";
         }
 
         private void clockTimer_Tick(object sender, EventArgs e)
