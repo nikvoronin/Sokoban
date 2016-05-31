@@ -18,9 +18,9 @@ namespace Sokoban
         int cellSizePx = 25;
         bool avoidSplashLevel = false;
 
-        public GameForm(bool goSelectLevel = false)
+        public GameForm(bool showSelectLevelMenu = false)
         {
-            avoidSplashLevel = goSelectLevel;
+            avoidSplashLevel = showSelectLevelMenu;
 
             SetStyle(
                 ControlStyles.OptimizedDoubleBuffer |
@@ -57,7 +57,7 @@ namespace Sokoban
             G.I.View.Resize(cellSizePx);
             G.I.View.DrawField();
 
-            this.Size = new Size(G.I.View.Width, G.I.View.Height);
+            Size = new Size(G.I.View.Width, G.I.View.Height);
 
             Invalidate();
         }
@@ -139,7 +139,7 @@ namespace Sokoban
                         Update_GameField();
                     }
                     break;
-            }
+            } // switch (e.KeyCode)
 
             if (dir.X != 0 || dir.Y != 0)
             {
@@ -161,8 +161,8 @@ namespace Sokoban
                         if (G.I.Logic.PlayerHx > 38)
                             Close();
                         break;
-                }// switch(whatsup)
-            } // if 
+                } // switch(whatsup)
+            } // if (dir.X != 0 || dir.Y != 0)
         } // Do_Keys()
 
         private void Show_LevelDone()
@@ -173,7 +173,9 @@ namespace Sokoban
                     G.I.ElapsedTimeLongString), 
                 "Level done!");
 
-            Show_SplashLevel();
+            closeLabel.Visible = false;
+            G.I.StartNextLevel(G.I.Logic.Map);
+            Update_GameField();
         }
 
         private void MainForm_Paint(object sender, PaintEventArgs e)

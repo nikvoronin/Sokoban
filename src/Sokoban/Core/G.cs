@@ -44,6 +44,15 @@ namespace Sokoban
             view = new View(level, logic);
         }
 
+        public void StartNextLevel(Level level)
+        {
+            int idx = Levels.IndexOf(level) + 1;
+            if (idx < Levels.Count)
+                StartLevel(Levels[idx]);
+            else
+                StartSplashLevel();
+        }
+
         public string ElapsedTimeLongString
         {
             get
