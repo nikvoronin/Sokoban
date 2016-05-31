@@ -32,8 +32,8 @@ namespace Sokoban
 
         private void MenuForm_Load(object sender, EventArgs e)
         {
-            if (G.I.Logic.Map != null)
-                Text = string.IsNullOrEmpty(G.I.Logic.Map.Name.Trim()) ?
+            if (G.I.Logic != null)
+                Text = string.IsNullOrEmpty(G.I.Logic.Map?.Name.Trim()) ?
                         G.APP_NAME :
                         G.I.Logic.Map.Name + " — " + G.APP_NAME;
 
@@ -54,7 +54,7 @@ Ctrl+, Ctrl- resize window.";
 
             continueButton.Enabled = !G.I.IsSplashLevel;
 
-            if (G.I.Logic.Map != null)
+            if (G.I.Logic?.Map != null)
                 selectLevelComboBox.SelectedItem = G.I.Logic.Map;
             else
                 if (selectLevelComboBox.Items.Count > 0)

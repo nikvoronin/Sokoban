@@ -32,10 +32,13 @@ namespace Sokoban
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            if (avoidSplashLevel)
-                Show_SelectLevelForm();
-            else
+            if (!avoidSplashLevel)
                 Show_SplashLevel();
+            else
+            {
+                G.I.StartSplashLevel();
+                Show_SelectLevelForm();
+            }
         }
 
         private void Show_SplashLevel()
@@ -54,8 +57,7 @@ namespace Sokoban
             G.I.View.Resize(cellSizePx);
             G.I.View.DrawField();
 
-            Width = G.I.View.Width;
-            Height = G.I.View.Height;
+            this.Size = new Size(G.I.View.Width, G.I.View.Height);
 
             Invalidate();
         }
@@ -176,7 +178,7 @@ namespace Sokoban
 
         private void MainForm_Paint(object sender, PaintEventArgs e)
         {
-            if (G.I.View.Canvas != null)
+            if (G.I.View?.Canvas != null)
                 e.Graphics.DrawImageUnscaled(G.I.View.Canvas, 0, 0);
         }
 
