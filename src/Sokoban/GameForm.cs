@@ -36,7 +36,7 @@ namespace Sokoban
                 Show_SplashLevel();
             else
             {
-                G.I.StartSplashLevel();
+                G.I.Start();
                 Show_SelectLevelForm();
             }
         }
@@ -44,7 +44,7 @@ namespace Sokoban
         private void Show_SplashLevel()
         {
             closeLabel.Visible = true;
-            G.I.StartSplashLevel();
+            G.I.Start();
             Update_GameField();
         }
 
@@ -174,7 +174,7 @@ namespace Sokoban
                 "Level done!");
 
             closeLabel.Visible = false;
-            G.I.StartNextLevel(G.I.Logic.Map);
+            G.I.StartNextLevel();
             Update_GameField();
         }
 

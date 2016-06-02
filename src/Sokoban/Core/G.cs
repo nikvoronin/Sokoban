@@ -25,16 +25,13 @@ namespace Sokoban
         bool isSplashLevel = false;
         public bool IsSplashLevel { get { return isSplashLevel; } }
 
-        public void Start(Level level)
+        public void Start(Level level = null)
         {
-            isSplashLevel = false;
-            StartLevel(level);
-        }
-
-        public void StartSplashLevel()
-        {
-            isSplashLevel = true;
-            StartLevel(splashLevel);
+            isSplashLevel = level == null;
+            StartLevel(
+                isSplashLevel ?
+                    splashLevel :
+                    level);
         }
 
         private void StartLevel(Level level)
@@ -44,13 +41,13 @@ namespace Sokoban
             view = new View(level, logic);
         }
 
-        public void StartNextLevel(Level level)
+        public void StartNextLevel()
         {
-            int idx = Levels.IndexOf(level) + 1;
-            if (idx < Levels.Count)
-                StartLevel(Levels[idx]);
-            else
-                StartSplashLevel();
+            int idx = Levels.IndexOf(logic.Map) + 1;
+            StartLevel(
+                idx < Levels.Count ?
+                    Levels[idx] :
+                    null);
         }
 
         public string ElapsedTimeLongString
