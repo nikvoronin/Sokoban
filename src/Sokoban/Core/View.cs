@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Sokoban
+namespace Sokoban.Core
 {
     /// <summary>
     /// Draws levels
@@ -126,11 +126,9 @@ namespace Sokoban
             if (bpShift < 1)
                 bpShift = 1;
             gs.FillRectangle(Brushes.DarkGoldenrod, sx + bpShift, bpShift, z - 1 - bpShift * 2, z - 1 - bpShift * 2);
+            gs.DrawLine(Pens.Yellow, sx + 1, z / 3, sx + z - 3, z / 3);
+            gs.DrawLine(Pens.Yellow, sx + 1, z / 3 * 2, sx + z - 3, z / 3 * 2);
             gs.DrawRectangle(Pens.Yellow, sx + bpShift, bpShift, z - 1 - bpShift * 2, z - 1 - bpShift * 2);
-            int d = z / 10 | 1;
-            Pen fatPen = new Pen(Brushes.Gold, d);
-            gs.DrawLine(fatPen, sx + 2 + bpShift, 2 + bpShift, sx + z - 3 - bpShift, z - 3 - bpShift);
-            gs.DrawLine(fatPen, sx + 2 + bpShift, z - 2 - bpShift, sx + z - 2 - bpShift, 2 + bpShift);
 
             // player
             sx += z;

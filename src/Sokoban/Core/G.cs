@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Sokoban
+namespace Sokoban.Core
 {
     public sealed class G : IDisposable
     {

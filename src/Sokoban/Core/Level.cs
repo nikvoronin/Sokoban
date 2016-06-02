@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Linq;
 
-namespace Sokoban
+namespace Sokoban.Core
 {
     public class Level
     {

@@ -5,7 +5,7 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Text;
 
-namespace Sokoban
+namespace Sokoban.Core
 {
     public static class Loader
     {

@@ -1,4 +1,4 @@
-﻿namespace Sokoban
+﻿namespace Sokoban.Core
 {
     public enum WhatsUp
     {

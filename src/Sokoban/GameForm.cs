@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sokoban.Core;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -168,7 +169,8 @@ namespace Sokoban
         private void Show_LevelDone()
         {
             MessageBox.Show(
-                string.Format("Amazing! You win!\nIn {0} steps\nby the time: {1}",
+                string.Format(
+                    "Amazing! You win!\nIn {0} steps\nby the time: {1}",
                     G.I.Logic.Steps,
                     G.I.ElapsedTimeLongString), 
                 "Level done!");

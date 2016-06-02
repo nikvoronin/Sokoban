@@ -57,8 +57,8 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\Cell.cs" />
-    <Compile Include="Enums\WhatsUp.cs" />
+    <Compile Include="Core\Cell.cs" />
+    <Compile Include="Core\WhatsUp.cs" />
     <Compile Include="Core\Level.cs" />
     <Compile Include="Core\G.cs" />
     <Compile Include="GameForm.cs">

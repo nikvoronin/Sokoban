@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace Sokoban
+namespace Sokoban.Core
 {
     /// <summary>
     /// Contains and manages data (player, level's cells, statistics)
