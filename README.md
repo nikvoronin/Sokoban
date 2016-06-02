@@ -2,13 +2,14 @@
 
 This is a small (about 50Kb) [Sokoban](https://en.wikipedia.org/wiki/Sokoban) game written in C# with procedurally generated graphics. Game and levels are packed in one .exe file.
 
-Primary goal of this project are use of procedural graphic, Model-View-Control pattern, embedded resources and GDI+ only.
+Primary goal of this project are use of vector graphics, MVC-pattern, embedded resources and GDI+ only.
 
 ![Main menu](/doc/mainmenu002.png)
 
-Cursor keys or WASD to move.<br/>
-Press ESCAPE to select another level.<br/>
-Ctrl+, Ctrl- change size of game window (Numpads +- does the same)
+CURSOR or WASD to move.<br/>
+ESCAPE to select another level.<br/>
+CTRL+, CTRL- resizes game board (Numpad's +- keys does the same).<br/>
+BACKSPACE to undo last movement.<br/>
 
 ![Ingame screen](/doc/ingame001.png)
 

@@ -27,6 +27,7 @@ namespace Sokoban.Core
         public Point PlayerDir { get { return playerDir; } }
 
         public readonly List<Point> CellsChanged = new List<Point>();
+        private Stack<Action> history = new Stack<Action>();
 
         public Logic(Level map)
         {
@@ -86,13 +87,13 @@ namespace Sokoban.Core
             return canPush;
         }
 
-        private WhatsUp MoveObject(Point dir)
+        private WhatsUp MoveObjectAbsolute(Point from, Point to)
         {
             WhatsUp result = WhatsUp.Move;
             movements++;
 
-            int fromHx = playerHx + dir.X;
-            int fromVy = playerVy + dir.Y;
+            int fromHx = from.X;
+            int fromVy = from.Y;
 
             Cell cfrom = cells[fromHx, fromVy];
             if (cfrom != Cell.BarrelOnPlate)
@@ -104,8 +105,8 @@ namespace Sokoban.Core
                 inPlace--;
             }
 
-            int toHx = fromHx + dir.X;
-            int toVy = fromVy + dir.Y;
+            int toHx = to.X;
+            int toVy = to.Y;
 
             if (cells[toHx, toVy] != Cell.Plate)
                 cells[toHx, toVy] = cfrom;
@@ -122,10 +123,25 @@ namespace Sokoban.Core
             return result;
         }
 
+        private WhatsUp MoveObjectRelative(Point dir)
+        {
+            Point from = new Point(
+                playerHx + dir.X,
+                playerVy + dir.Y);
+
+            Point to = new Point(
+                from.X + dir.X,
+                from.Y + dir.Y);
+
+            return
+                MoveObjectAbsolute(from, to);
+        }
+
         public WhatsUp MovePlayer(Point dir)
         {
             CellsChanged.Clear();
             WhatsUp result = WhatsUp.Nothing;
+            Action act = new Action();
 
             CellsChanged.Add(new Point(playerHx, playerVy));
             if (CanPlayerMove(dir))
@@ -133,6 +149,7 @@ namespace Sokoban.Core
                 playerHx += dir.X;
                 playerVy += dir.Y;
                 CellsChanged.Add(new Point(playerHx, playerVy));
+                act.PlayerMove = dir;
 
                 steps++;
                 result = WhatsUp.Step;
@@ -141,16 +158,20 @@ namespace Sokoban.Core
             {
                 if (CanPushObject(dir))
                 {
-                    result = MoveObject(dir);
+                    result = MoveObjectRelative(dir);
 
                     CellsChanged.Add(new Point(playerHx, playerVy));
                     playerHx += dir.X;
                     playerVy += dir.Y;
                     CellsChanged.Add(new Point(playerHx, playerVy));
+                    act.PlayerMove = dir;
+                    act.IsBarrelMovedToo = true;
 
                     steps++;
                 }
             }
+
+            PushAction(act);
 
             if (dir.X != 0)
                 playerDir.X = dir.X;
@@ -166,5 +187,44 @@ namespace Sokoban.Core
 
             return result;
         }
-    }
+
+        private void PushAction(Action act)
+        {
+            if (!undoInProgress && !act.IsEmpty)
+                    history.Push(act);
+        }
+
+        private bool undoInProgress = false;
+        public WhatsUp Undo()
+        {
+            if (history.Count == 0)
+                return WhatsUp.Nothing;
+
+            Action act = history.Pop();
+
+            undoInProgress = true;
+
+            MovePlayer(new Point(-act.PlayerMove.X, -act.PlayerMove.Y));
+
+            if (act.IsBarrelMovedToo)
+            {
+                MoveObjectAbsolute(
+                    new Point(playerHx + act.PlayerMove.X * 2, playerVy + act.PlayerMove.Y * 2),
+                    new Point(playerHx + act.PlayerMove.X, PlayerVy + act.PlayerMove.Y));
+            }
+
+            undoInProgress = false;
+
+            return WhatsUp.StepBack;
+        } // StepBack()
+
+        private class Action
+        {
+            public Point PlayerMove = Point.Empty;
+            public bool IsBarrelMovedToo = false;
+
+            public bool IsEmpty { get { return PlayerMove == Point.Empty; } }
+        }
+
+    } // class Logic
 }

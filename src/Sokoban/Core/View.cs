@@ -86,8 +86,12 @@ namespace Sokoban.Core
 
             // barrel
             sx += z;
-            gs.FillRectangle(Brushes.DarkGoldenrod, sx + 1, 1, z - 3, z - 3);
-            gs.DrawRectangle(Pens.Yellow, sx + 1, 1, z - 3, z - 3);
+            dd = z / 25;
+            if (dd < 1)
+                dd = 1;
+            widePen.Color = Color.Yellow;
+            gs.FillRectangle(Brushes.DarkGoldenrod, sx + dd * 2, dd * 2, z - dd * 5, z - dd * 5);
+            gs.DrawRectangle(widePen, sx + dd * 2, dd * 2, z - dd * 5, z - dd * 5);
 
             // plate
             sx += z;
@@ -122,13 +126,10 @@ namespace Sokoban.Core
 
             // barrel on plate
             sx += z;
-            int bpShift = z / 20;
-            if (bpShift < 1)
-                bpShift = 1;
-            gs.FillRectangle(Brushes.DarkGoldenrod, sx + bpShift, bpShift, z - 1 - bpShift * 2, z - 1 - bpShift * 2);
-            gs.DrawLine(Pens.Yellow, sx + 1, z / 3, sx + z - 3, z / 3);
-            gs.DrawLine(Pens.Yellow, sx + 1, z / 3 * 2, sx + z - 3, z / 3 * 2);
-            gs.DrawRectangle(Pens.Yellow, sx + bpShift, bpShift, z - 1 - bpShift * 2, z - 1 - bpShift * 2);
+            gs.FillRectangle(Brushes.DarkGoldenrod, sx + dd * 2, dd * 2, z - dd * 4, z - dd * 4);
+            gs.DrawLine(widePen, sx + dd * 2, z / 3 + dd / 2, sx + z - dd * 2, z / 3 + dd / 2);
+            gs.DrawLine(widePen, sx + dd * 2, z / 3 * 2 + dd / 2, sx + z - dd * 2, z / 3 * 2 + dd / 2);
+            gs.DrawRectangle(widePen, sx + dd * 2, dd * 2, z - dd * 4, z - dd * 4);
 
             // player
             sx += z;
@@ -176,6 +177,8 @@ namespace Sokoban.Core
                     break;
 
                 case Cell.Barrel:
+                    srcRect.X = 0;
+                    g.DrawImage(sprites, shift + hx * z, shift + vy * z, srcRect, GraphicsUnit.Pixel);
                     srcRect.X = z * 2;
                     g.DrawImage(sprites, shift + hx * z, shift + vy * z, srcRect, GraphicsUnit.Pixel);
                     break;

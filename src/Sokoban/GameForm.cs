@@ -140,6 +140,11 @@ namespace Sokoban
                         Update_GameField();
                     }
                     break;
+                case Keys.Back:
+                    G.I.Logic.Undo();
+                    G.I.View.Update();
+                    Invalidate();
+                    break;
             } // switch (e.KeyCode)
 
             if (dir.X != 0 || dir.Y != 0)

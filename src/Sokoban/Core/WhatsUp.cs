@@ -7,6 +7,7 @@
         Win,
         Step,
         Move,
-        InPlace
+        InPlace,
+        StepBack
     }
 }
