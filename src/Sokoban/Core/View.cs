@@ -72,7 +72,7 @@ namespace Sokoban.Core
 
             // wall
             sx += z;
-            int dd = z / 15 | 1;
+            int dd = (int)(z / 12.5) | 1;
             gs.FillRectangle(Brushes.Red, sx, 0, z, z);
             Pen widePen = new Pen(Brushes.DarkRed, dd);
 
@@ -86,12 +86,12 @@ namespace Sokoban.Core
 
             // barrel
             sx += z;
-            dd = z / 25;
+            dd = z / 20;
             if (dd < 1)
                 dd = 1;
-            widePen.Color = Color.Yellow;
-            gs.FillRectangle(Brushes.DarkGoldenrod, sx + dd * 2, dd * 2, z - dd * 5, z - dd * 5);
-            gs.DrawRectangle(widePen, sx + dd * 2, dd * 2, z - dd * 5, z - dd * 5);
+            widePen = new Pen(Brushes.Yellow, dd);
+            gs.FillRectangle(Brushes.DarkGoldenrod, sx + dd * 2, dd * 2, z - dd * 4, z - dd * 4);
+            gs.DrawRectangle(widePen, sx + dd * 2, dd * 2, z - dd * 4, z - dd * 4);
 
             // plate
             sx += z;
@@ -127,8 +127,10 @@ namespace Sokoban.Core
             // barrel on plate
             sx += z;
             gs.FillRectangle(Brushes.DarkGoldenrod, sx + dd * 2, dd * 2, z - dd * 4, z - dd * 4);
-            gs.DrawLine(widePen, sx + dd * 2, z / 3 + dd / 2, sx + z - dd * 2, z / 3 + dd / 2);
-            gs.DrawLine(widePen, sx + dd * 2, z / 3 * 2 + dd / 2, sx + z - dd * 2, z / 3 * 2 + dd / 2);
+            int a = z / 3 + dd;
+            int aa = z / 3 * 2;
+            gs.DrawLine(widePen, sx + dd * 2, a, sx + z - dd * 2, a);
+            gs.DrawLine(widePen, sx + dd * 2, aa, sx + z - dd * 2, aa);
             gs.DrawRectangle(widePen, sx + dd * 2, dd * 2, z - dd * 4, z - dd * 4);
 
             // player
