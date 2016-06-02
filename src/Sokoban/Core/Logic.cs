@@ -16,9 +16,11 @@ namespace Sokoban.Core
         Point playerDir = Point.Empty;
 
         int steps = 0;
+        int movements = 0;
         int inPlace = 0;
 
         public int Steps    { get { return steps; } }
+        public int Movements { get { return movements; } }
         public int InPlace  { get { return inPlace; } }
         public int PlayerHx  { get { return playerHx; } }
         public int PlayerVy  { get { return playerVy; } }
@@ -87,6 +89,7 @@ namespace Sokoban.Core
         private WhatsUp MoveObject(Point dir)
         {
             WhatsUp result = WhatsUp.Move;
+            movements++;
 
             int fromHx = playerHx + dir.X;
             int fromVy = playerVy + dir.Y;

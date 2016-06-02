@@ -40,7 +40,10 @@ namespace Sokoban
 
             if (G.I.Logic != null)
             {
-                stepsToolStripStatusLabel.Text = G.I.Logic.Steps.ToString();
+                stepsToolStripStatusLabel.Text =
+                    string.Format( "{0}/{1}",
+                    G.I.Logic.Steps,
+                    G.I.Logic.Movements);
                 doneToolStripStatusLabel.Text =
                     string.Format( "{0} ({1})",
                         G.I.Logic.InPlace,

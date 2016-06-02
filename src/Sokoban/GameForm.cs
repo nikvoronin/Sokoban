@@ -170,10 +170,11 @@ namespace Sokoban
         {
             MessageBox.Show(
                 string.Format(
-                    "Amazing! You win!\nIn {0} steps\nby the time: {1}",
+                    "Amazing! You win!\nIn {0} steps\nAnd {1} movements of boxes\nBy the time: {2}",
                     G.I.Logic.Steps,
+                    G.I.Logic.Movements,
                     G.I.ElapsedTimeLongString), 
-                "Level done!");
+                "Level Done!");
 
             closeLabel.Visible = false;
             G.I.StartNextLevel();

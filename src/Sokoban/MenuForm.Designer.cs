@@ -71,7 +71,7 @@
             // 
             toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            toolStripStatusLabel2.Size = new System.Drawing.Size(97, 25);
+            toolStripStatusLabel2.Size = new System.Drawing.Size(83, 25);
             toolStripStatusLabel2.Spring = true;
             toolStripStatusLabel2.Text = "Sokoban";
             toolStripStatusLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -154,8 +154,9 @@
             // stepsToolStripStatusLabel
             // 
             this.stepsToolStripStatusLabel.Name = "stepsToolStripStatusLabel";
-            this.stepsToolStripStatusLabel.Size = new System.Drawing.Size(17, 25);
-            this.stepsToolStripStatusLabel.Text = "0";
+            this.stepsToolStripStatusLabel.Size = new System.Drawing.Size(31, 25);
+            this.stepsToolStripStatusLabel.Text = "0/0";
+            this.stepsToolStripStatusLabel.ToolTipText = "Player\'s steps / Movements";
             // 
             // doneToolStripStatusLabel
             // 
