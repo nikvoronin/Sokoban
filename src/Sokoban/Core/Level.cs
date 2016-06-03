@@ -40,59 +40,35 @@ namespace Sokoban.Core
                     if (x >= WidthHx)
                         break;
 
-                    bool strangeCell = false;
-
-                    Cells[x, y] = Cell.Empty;
-                    switch (ch)
+                    Cells[x, y] = (Cell)Convert.ToByte(ch);
+                    switch (Cells[x, y])
                     {
-                        //empty
-                        case '_': 
-                        case ' ':
+                        case Cell.EmptySp:
                             Cells[x, y] = Cell.Empty;
                             break;
-                        // wall or bricks
-                        case '#':
-                            Cells[x, y] = Cell.Wall;
-                            break;
-                        // barrel or box
-                        case '$':
+                        case Cell.Barrel:
                             Barrels++;
-                            Cells[x, y] = Cell.Barrel;
                             break;
-                        // plate or target
-                        case '.':
+                        case Cell.Plate:
                             Plates++;
-                            Cells[x, y] = Cell.Plate;
                             break;
-                        // barrel on plate, box at the right place
-                        case '*':
+                        case Cell.BarrelOnPlate:
                             Plates++;
                             InPlace++;
                             Barrels++;
-                            Cells[x, y] = Cell.BarrelOnPlate;
                             break;
                         // player starts here
-                        case '@':
-                            Cells[x, y] = Cell.Empty;
+                        case Cell.PlayerStartsAt:
                             StartAt = new Point(x, y);
+                            Cells[x, y] = Cell.Empty;
                             break;
                         // player starts here and he is over the plate
-                        case '+':
+                        case Cell.PlayerOnPlate:
                             Plates++;
                             Cells[x, y] = Cell.Plate;
                             StartAt = new Point(x, y);
                             break;
-                        default:
-                            strangeCell = true;
-                            break;
                     } // switch ch
-
-                    // we can write letters
-                    if (strangeCell)
-                    {
-                        byte b = Convert.ToByte(ch);
-                        Cells[x, y] = (Cell)b;
-                    }
 
                     x++;
                 } // foreach chars

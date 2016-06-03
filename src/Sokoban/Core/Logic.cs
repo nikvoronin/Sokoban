@@ -76,9 +76,7 @@ namespace Sokoban.Core
                 nextY > -1 && nextY < Map.HeightVy)
             {
                 canPush =
-                    (cells[newX, newY] == Cell.Barrel ||
-                     cells[newX, newY] == Cell.BarrelOnPlate ||
-                     (byte)cells[newX, newY] > 7)
+                    (cells[newX, newY] != Cell.Wall)
                     &&
                     (cells[nextX, nextY] == Cell.Empty ||
                      cells[nextX, nextY] == Cell.Plate);
