@@ -85,6 +85,17 @@ namespace Sokoban.Core
             embStream.Close();
         }
 
+        public void Win()
+        {
+            // STUB
+            SaveRecordTable();
+        }
+
+        private void SaveRecordTable()
+        {
+            // STUB
+        }
+
         public void Dispose()
         {
             view.Dispose();

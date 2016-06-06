@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Cell.cs" />
+    <Compile Include="Core\Crypto.cs" />
     <Compile Include="Core\WhatsUp.cs" />
     <Compile Include="Core\Level.cs" />
     <Compile Include="Core\G.cs" />

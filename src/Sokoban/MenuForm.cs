@@ -53,7 +53,8 @@ namespace Sokoban
             helpLabel.Text = @"CURSOR or WASD to move.
 ESCAPE to select another level.
 CTRL+, CTRL- resizes game board.
-BACKSPACE to undo last movement.";
+BACKSPACE to undo last movement.
+F5 restarts level.";
 
             selectLevelComboBox.DataSource = G.I.Levels;
 

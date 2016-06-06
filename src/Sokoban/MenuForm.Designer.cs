@@ -146,7 +146,7 @@
             toolStripStatusLabel5,
             this.timeToolStripStatusLabel,
             toolStripStatusLabel2});
-            this.mainStatusStrip.Location = new System.Drawing.Point(0, 123);
+            this.mainStatusStrip.Location = new System.Drawing.Point(0, 140);
             this.mainStatusStrip.Name = "mainStatusStrip";
             this.mainStatusStrip.Size = new System.Drawing.Size(408, 30);
             this.mainStatusStrip.TabIndex = 7;
@@ -173,7 +173,7 @@
             // quitButton
             // 
             this.quitButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.quitButton.Location = new System.Drawing.Point(319, 88);
+            this.quitButton.Location = new System.Drawing.Point(319, 105);
             this.quitButton.Name = "quitButton";
             this.quitButton.Size = new System.Drawing.Size(75, 23);
             this.quitButton.TabIndex = 1;
@@ -192,7 +192,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(408, 153);
+            this.ClientSize = new System.Drawing.Size(408, 170);
             this.Controls.Add(this.helpLabel);
             this.Controls.Add(this.mainStatusStrip);
             this.Controls.Add(this.quitButton);
@@ -201,7 +201,7 @@
             this.Controls.Add(label1);
             this.Controls.Add(this.selectLevelComboBox);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(424, 193);
+            this.MinimumSize = new System.Drawing.Size(424, 210);
             this.Name = "MenuForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Sokoban";

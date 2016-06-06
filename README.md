@@ -1,8 +1,8 @@
 # Sokoban
 
-This is a small (about 50Kb) [Sokoban](https://en.wikipedia.org/wiki/Sokoban) game written in C# with procedurally generated graphics. Game and levels are packed in one .exe file.
+This is a small (about 50Kb) [Sokoban](https://en.wikipedia.org/wiki/Sokoban) game written in C# with vector graphics. Game and levels are packed in one .exe file.
 
-Primary goal of this project are use of vector graphics, MVC-pattern, embedded resources and GDI+ only.
+Primary goal of this project are use of vector graphics, MVC-pattern, packed embedded resources and using of GDI+ only.
 
 ![Main menu](/doc/mainmenu002.png)
 
@@ -10,16 +10,17 @@ CURSOR or WASD to move.<br/>
 ESCAPE to select another level.<br/>
 CTRL+, CTRL- resizes game board (Numpad's +- keys does the same).<br/>
 BACKSPACE to undo last movement.<br/>
+F5 restarts current level.<br/>
 
 ![Ingame screen](/doc/ingame001.png)
 
 
 ## Thanks to
 
-ZipStorer by [Jaime Olivares](https://github.com/jaime-olivares/zipstorer)<br/>
-"Rabbit" levels by [Thinking Rabbit](https://en.wikipedia.org/wiki/Thinking_Rabbit)<br/>
-"SVB" levels by [Belyaev S. V.](http://svb-sokoban.narod.ru)<br/>
-"GRIGoRusha" levels by [Evgeny Grigoriev](http://grigr.narod.ru)
+**ZipStorer** by [Jaime Olivares](https://github.com/jaime-olivares/zipstorer)<br/>
+**Rabbit** levels by [Thinking Rabbit](https://en.wikipedia.org/wiki/Thinking_Rabbit)<br/>
+**SVB** levels by [Belyaev S. V.](http://svb-sokoban.narod.ru)<br/>
+**GRIGoRusha** levels by [Evgeny Grigoriev](http://grigr.narod.ru)
 
 
 # Level Map

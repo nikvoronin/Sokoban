@@ -78,14 +78,19 @@ namespace Sokoban
 
                 case DialogResult.OK:       // start thinking over new level
                     Level level = menuForm.Tag as Level;
-                    if (level != null)
-                    {
-                        closeLabel.Visible = false;
-                        G.I.Start(level);
-                        Update_GameField();
-                    }
+                    if (level == null)
+                        Close();
+                    else
+                        RestartLevel(level);
                     break;
             }
+        }
+
+        private void RestartLevel(Level level)
+        {
+            closeLabel.Visible = false;
+            G.I.Start(level);
+            Update_GameField();
         }
 
         private void Do_Keys(KeyEventArgs e)
@@ -144,6 +149,9 @@ namespace Sokoban
                     G.I.Logic.Undo();
                     G.I.View.Update();
                     Invalidate();
+                    break;
+                case Keys.F5:
+                    RestartLevel(G.I.Logic.Map);
                     break;
             } // switch (e.KeyCode)
 

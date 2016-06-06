@@ -181,6 +181,7 @@ namespace Sokoban.Core
                 inPlace == Map.Barrels)
             {
                 result = WhatsUp.Win;
+                G.I.Win();
             }
 
             return result;

@@ -57,12 +57,10 @@ namespace Sokoban.Core
                             InPlace++;
                             Barrels++;
                             break;
-                        // player starts here
                         case Cell.PlayerStartsAt:
                             StartAt = new Point(x, y);
                             Cells[x, y] = Cell.Empty;
                             break;
-                        // player starts here and he is over the plate
                         case Cell.PlayerOnPlate:
                             Plates++;
                             Cells[x, y] = Cell.Plate;

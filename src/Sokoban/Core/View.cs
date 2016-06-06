@@ -173,7 +173,6 @@ namespace Sokoban.Core
                     break;
 
                 case Cell.Wall:
-                    // wall
                     srcRect.X = z;
                     g.DrawImage(sprites, shift + hx * z, shift + vy * z, srcRect, GraphicsUnit.Pixel);
                     break;
@@ -208,6 +207,8 @@ namespace Sokoban.Core
                 if ((byte)cell > 7 && (byte)cell < 255)
                 {
                     string str = "" + Convert.ToChar(cell);
+                    srcRect.X = 0;
+                    g.DrawImage(sprites, shift + hx * z, shift + vy * z, srcRect, GraphicsUnit.Pixel);
                     g.DrawString(str, font, Brushes.White, shift + hx * z, shift + vy * z);
                 }
         } // DrawCell()
