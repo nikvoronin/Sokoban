@@ -1,8 +1,8 @@
 # Sokoban
 
-This is a small (about 50Kb) [Sokoban](https://en.wikipedia.org/wiki/Sokoban) game written in C# with vector graphics. Game and levels are packed in one .exe file.
+This is a small (about 64Kb) [Sokoban](https://en.wikipedia.org/wiki/Sokoban) game written in C# with vector graphics. Game and levels are packed in one .exe file. Primary goal of this project are use of vector graphics, MVC-pattern, packed embedded resources and using of GDI+ only.
 
-Primary goal of this project are use of vector graphics, MVC-pattern, packed embedded resources and using of GDI+ only.
+[DOWNLOAD](https://github.com/nikvoronin/sokoban/releases/latest) latest release here.
 
 ![Main menu](/doc/mainmenu002.png)
 
