@@ -2,12 +2,8 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/bin/Debug
-/src/.vs
-/src/Sokoban/obj
-/bin/Release/Sokoban.vshost.exe.manifest
-/bin/Release/Sokoban.vshost.exe.config
-/bin/Release/Sokoban.vshost.exe
-/bin/Release/Sokoban.exe.config
+[Bb]in/
+[Oo]bj/
+.vs
 *.pdb
 *.user
