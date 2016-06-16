@@ -135,6 +135,7 @@ namespace Sokoban.Core
 
             // player
             sx += z;
+            gs.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                 // body
             gs.FillEllipse(Brushes.Blue, sx + 2, 2, z - 2, z - 2);
                 // tail

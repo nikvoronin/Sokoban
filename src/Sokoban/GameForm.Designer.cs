@@ -42,7 +42,7 @@
             this.closeLabel.Size = new System.Drawing.Size(16, 15);
             this.closeLabel.TabIndex = 0;
             this.closeLabel.Text = "X";
-            this.closeLabel.Click += new System.EventHandler(this.label1_Click);
+            this.closeLabel.Click += new System.EventHandler(this.closeLabel_Click);
             // 
             // GameForm
             // 
@@ -55,10 +55,11 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "GameForm";
             this.Text = "Sokoban";
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GameForm_FormClosing);
+            this.Load += new System.EventHandler(this.GameForm_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.GameForm_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameForm_MouseDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

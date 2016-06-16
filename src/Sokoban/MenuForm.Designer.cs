@@ -95,6 +95,7 @@
             // helpLabel
             // 
             this.helpLabel.AutoSize = true;
+            this.helpLabel.BackColor = System.Drawing.SystemColors.Control;
             this.helpLabel.Location = new System.Drawing.Point(49, 53);
             this.helpLabel.Name = "helpLabel";
             this.helpLabel.Size = new System.Drawing.Size(128, 13);

@@ -50,11 +50,11 @@ namespace Sokoban
                         G.I.Logic.Map.Plates);
             }
 
-            helpLabel.Text = @"CURSOR or WASD to move.
-ESCAPE to select another level.
-CTRL+, CTRL- resizes game board.
-BACKSPACE to undo last movement.
-F5 restarts level.";
+            helpLabel.Text = @"CURSOR, WASD to move. D-Pad
+ESCAPE to select another level. START
+CTRL+, CTRL- resizes game board. RB, LB
+BACKSPACE to undo last movement. B
+F5 restarts level. BACK";
 
             selectLevelComboBox.DataSource = G.I.Levels;
 

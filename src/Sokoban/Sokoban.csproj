@@ -63,6 +63,7 @@
     <Compile Include="Core\WhatsUp.cs" />
     <Compile Include="Core\Level.cs" />
     <Compile Include="Core\G.cs" />
+    <Compile Include="Core\X.cs" />
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
     </Compile>

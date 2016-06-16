@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using XInput.Wrapper;
 
 namespace Sokoban.Core
 {
@@ -12,13 +13,18 @@ namespace Sokoban.Core
 
         private static G _instance = new G();
         public static G I { get { return _instance; } }
-        private G() { }
+        private G()
+        {
+            Gamepad = X.IsAvailable ? X.Gamepad_1 : null;
+        }
 
         private DateTime startTime = DateTime.Now;
         private Logic logic;
         public Logic Logic { get { return logic; } }
         private View view;
         public View View { get { return view; } }
+
+        public X.Gamepad Gamepad = null;
 
         public readonly List<Level> Levels = new List<Level>();
         private Level splashLevel;
