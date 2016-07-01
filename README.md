@@ -4,7 +4,7 @@ This is a small (about 64Kb) [Sokoban](https://en.wikipedia.org/wiki/Sokoban) ga
 
 [DOWNLOAD](https://github.com/nikvoronin/sokoban/releases/latest) latest release here.
 
-![Main menu](/doc/mainmenu002.png)
+![Main menu](https://cloud.githubusercontent.com/assets/11328666/16518051/83aeb698-3f89-11e6-8efb-33c1f4483686.png)
 
 CURSOR, WASD, [D-Pad] to move.<br/>
 ESCAPE, [START] to select another level.<br/>
@@ -14,7 +14,7 @@ F5, [BACK] restarts current level.<br/>
 
 You can use gamepad at select level menu: [D-Pad] to navigate, [A] as ENTER and [B] as TAB.
 
-![Ingame screen](/doc/ingame001.png)
+![Ingame screen](https://cloud.githubusercontent.com/assets/11328666/16518066/981edcca-3f89-11e6-9e6a-c54808de643d.png)
 
 
 ## Thanks to
@@ -29,7 +29,7 @@ You can use gamepad at select level menu: [D-Pad] to navigate, [A] as ENTER and 
 
 The game contains about 838 levels.
 
-![Select level](/doc/selectlevel003.png)
+![Select level](https://cloud.githubusercontent.com/assets/11328666/16518070/9b01f09e-3f89-11e6-9c3b-18ced594cb25.png)
 
 Level is a text file with CRLF line ending. First line is a name of the level. Next lines contains blocks of level. Level map must ends with empty line (CRLF only).
 
@@ -71,5 +71,5 @@ Levels are contained in a single text file. You can pack that file into a .zip a
 
 # Command-line
 
-Sokoban.exe<br>
+Sokoban.exe<br/>
 Sokoban.exe userDefinedLevels.pack
