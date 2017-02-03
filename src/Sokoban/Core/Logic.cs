@@ -9,7 +9,7 @@ namespace Sokoban.Core
     public class Logic
     {
         public readonly Level Map = null;  // template of the level
-        Cell[,] cells = null;              // current instance of level, editable
+        Cell[,] cells = null;              // editable instance of the current level
 
         int playerHx = 0;
         int playerVy = 0;
@@ -19,12 +19,12 @@ namespace Sokoban.Core
         int movements = 0;
         int inPlace = 0;
 
-        public int Steps    { get { return steps; } }
-        public int Movements { get { return movements; } }
-        public int InPlace  { get { return inPlace; } }
-        public int PlayerHx  { get { return playerHx; } }
-        public int PlayerVy  { get { return playerVy; } }
-        public Point PlayerDir { get { return playerDir; } }
+        public int Steps        { get { return steps;       } }
+        public int Movements    { get { return movements;   } }
+        public int InPlace      { get { return inPlace;     } }
+        public int PlayerHx     { get { return playerHx;    } }
+        public int PlayerVy     { get { return playerVy;    } }
+        public Point PlayerDir  { get { return playerDir;   } }
 
         public readonly List<Point> CellsChanged = new List<Point>();
         private Stack<Action> history = new Stack<Action>();
@@ -131,11 +131,15 @@ namespace Sokoban.Core
                 from.X + dir.X,
                 from.Y + dir.Y);
 
-            return
-                MoveObjectAbsolute(from, to);
+            return MoveObjectAbsolute(from, to);
         }
 
         public WhatsUp MovePlayer(Point dir)
+        {
+            return MovePlayer(dir, false);
+        }
+
+        private WhatsUp MovePlayer(Point dir, bool undoMove)
         {
             CellsChanged.Clear();
             WhatsUp result = WhatsUp.Nothing;
@@ -169,7 +173,8 @@ namespace Sokoban.Core
                 }
             }
 
-            PushAction(act);
+            if (!undoMove && !act.IsEmpty)
+                history.Push(act);
 
             if (dir.X != 0)
                 playerDir.X = dir.X;
@@ -187,13 +192,6 @@ namespace Sokoban.Core
             return result;
         }
 
-        private void PushAction(Action act)
-        {
-            if (!undoInProgress && !act.IsEmpty)
-                    history.Push(act);
-        }
-
-        private bool undoInProgress = false;
         public WhatsUp Undo()
         {
             if (history.Count == 0)
@@ -201,21 +199,17 @@ namespace Sokoban.Core
 
             Action act = history.Pop();
 
-            undoInProgress = true;
-
-            MovePlayer(new Point(-act.PlayerMove.X, -act.PlayerMove.Y));
+            MovePlayer(
+                new Point(-act.PlayerMove.X, -act.PlayerMove.Y),
+                true);
 
             if (act.IsBarrelMovedToo)
-            {
                 MoveObjectAbsolute(
                     new Point(playerHx + act.PlayerMove.X * 2, playerVy + act.PlayerMove.Y * 2),
                     new Point(playerHx + act.PlayerMove.X, PlayerVy + act.PlayerMove.Y));
-            }
 
-            undoInProgress = false;
-
-            return WhatsUp.StepBack;
-        } // StepBack()
+            return WhatsUp.Undo;
+        } // Undo()
 
         private class Action
         {

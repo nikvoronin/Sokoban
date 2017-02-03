@@ -8,6 +8,6 @@
         Step,
         Move,
         InPlace,
-        StepBack
+        Undo
     }
 }

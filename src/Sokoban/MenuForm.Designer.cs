@@ -71,7 +71,7 @@
             // 
             toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            toolStripStatusLabel2.Size = new System.Drawing.Size(83, 25);
+            toolStripStatusLabel2.Size = new System.Drawing.Size(86, 25);
             toolStripStatusLabel2.Spring = true;
             toolStripStatusLabel2.Text = "Sokoban";
             toolStripStatusLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -147,7 +147,7 @@
             toolStripStatusLabel5,
             this.timeToolStripStatusLabel,
             toolStripStatusLabel2});
-            this.mainStatusStrip.Location = new System.Drawing.Point(0, 140);
+            this.mainStatusStrip.Location = new System.Drawing.Point(0, 141);
             this.mainStatusStrip.Name = "mainStatusStrip";
             this.mainStatusStrip.Size = new System.Drawing.Size(408, 30);
             this.mainStatusStrip.TabIndex = 7;
@@ -155,8 +155,8 @@
             // stepsToolStripStatusLabel
             // 
             this.stepsToolStripStatusLabel.Name = "stepsToolStripStatusLabel";
-            this.stepsToolStripStatusLabel.Size = new System.Drawing.Size(31, 25);
-            this.stepsToolStripStatusLabel.Text = "0/0";
+            this.stepsToolStripStatusLabel.Size = new System.Drawing.Size(28, 25);
+            this.stepsToolStripStatusLabel.Text = "0:0";
             this.stepsToolStripStatusLabel.ToolTipText = "Player\'s steps / Movements";
             // 
             // doneToolStripStatusLabel
@@ -193,7 +193,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(408, 170);
+            this.ClientSize = new System.Drawing.Size(408, 171);
             this.Controls.Add(this.helpLabel);
             this.Controls.Add(this.mainStatusStrip);
             this.Controls.Add(this.quitButton);

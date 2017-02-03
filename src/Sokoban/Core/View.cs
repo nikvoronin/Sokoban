@@ -36,26 +36,19 @@ namespace Sokoban.Core
 
         public void Resize(int cellSizePx)
         {
-            if (screen != null)
-            {
-                font?.Dispose();
-                screen?.Dispose();
-                sprites?.Dispose();
-                g?.Dispose();
-            }
+            font?.Dispose();
+            screen?.Dispose();
+            sprites?.Dispose();
+            g?.Dispose();
 
             z = cellSizePx < 10 ? 10 : cellSizePx;
             shift = z / 4;
             int borderW = z / 2;
             int w = Map.WidthHx * z + borderW;
             int h = Map.HeightVy * z + borderW;
+
             screen = new Bitmap(w, h);
-
             font = new Font(LETTERS_FONT_FAMILY, z * LETTERS_FONT_SCALE, GraphicsUnit.Pixel);
-
-            if (g != null)
-                g.Dispose();
-
             g = Graphics.FromImage(screen);
 
             GenerateSprites();

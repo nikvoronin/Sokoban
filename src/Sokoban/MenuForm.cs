@@ -34,20 +34,13 @@ namespace Sokoban
         private void MenuForm_Load(object sender, EventArgs e)
         {
             if (G.I.Logic != null)
+            {
                 Text = string.IsNullOrEmpty(G.I.Logic.Map?.Name.Trim()) ?
                         G.APP_NAME :
                         G.I.Logic.Map.Name + " — " + G.APP_NAME;
 
-            if (G.I.Logic != null)
-            {
-                stepsToolStripStatusLabel.Text =
-                    string.Format( "{0}/{1}",
-                    G.I.Logic.Steps,
-                    G.I.Logic.Movements);
-                doneToolStripStatusLabel.Text =
-                    string.Format( "{0} ({1})",
-                        G.I.Logic.InPlace,
-                        G.I.Logic.Map.Plates);
+                stepsToolStripStatusLabel.Text = $"{G.I.Logic.Steps}:{G.I.Logic.Movements}";
+                doneToolStripStatusLabel.Text = $"{G.I.Logic.InPlace} ({G.I.Logic.Map?.Plates})";
             }
 
             helpLabel.Text = @"CURSOR, WASD to move. D-Pad
@@ -101,5 +94,5 @@ F5 restarts level. BACK";
                 if (selectLevelComboBox.SelectedValue != null)
                     goButton_Click(sender, EventArgs.Empty);
         }
-    }
+    } // class
 }

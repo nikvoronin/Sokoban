@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 [assembly: AssemblyTitle("Sokoban")]
-[assembly: AssemblyDescription("Sokoban with procedurally generated graphics")]
+[assembly: AssemblyDescription("Sokoban with procedurally generated vector graphics")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Nikolai Voronin")]
 [assembly: AssemblyProduct("Sokoban")]
-[assembly: AssemblyCopyright("Copyright © 2015-2016 Nikolai Voronin")]
+[assembly: AssemblyCopyright("Copyright © 2015-2017 Nikolai Voronin")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("0.6.1")]

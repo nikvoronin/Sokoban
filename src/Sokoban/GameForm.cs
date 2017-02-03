@@ -69,19 +69,19 @@ namespace Sokoban
 
         private void TranslateGamepadButtons(Keys k)
         {
-            string thisKeys = "";
+            string thisKey = "";
             switch(k)
             {
-                case Keys.Up:    thisKeys = "{UP}"; break;
-                case Keys.Down:  thisKeys = "{DOWN}"; break;
-                case Keys.Left:  thisKeys = "{LEFT}"; break;
-                case Keys.Right: thisKeys = "{RIGHT}"; break;
-                case Keys.Back:  thisKeys = "{TAB}"; break;
-                case Keys.Enter: thisKeys = "~"; break;
+                case Keys.Up:    thisKey = "{UP}";      break;
+                case Keys.Down:  thisKey = "{DOWN}";    break;
+                case Keys.Left:  thisKey = "{LEFT}";    break;
+                case Keys.Right: thisKey = "{RIGHT}";   break;
+                case Keys.Back:  thisKey = "{TAB}";     break;
+                case Keys.Enter: thisKey = "~";         break;
             }
 
-            if (!string.IsNullOrEmpty(thisKeys))
-                SendKeys.Send(thisKeys);
+            if (!string.IsNullOrEmpty(thisKey))
+                SendKeys.Send(thisKey);
         }
 
         private void Gamepad_KeyDown(object sender, EventArgs e)
@@ -101,12 +101,16 @@ namespace Sokoban
         {
             Keys keys = Keys.None;
             X.Gamepad gpad = G.I.Gamepad;
+
             if (gpad.Dpad_Down_down)
                 keys = Keys.Down;
+
             if (gpad.Dpad_Up_down)
                 keys = Keys.Up;
+
             if (gpad.Dpad_Left_down)
                 keys = Keys.Left;
+
             if (gpad.Dpad_Right_down)
                 keys = Keys.Right;
 
@@ -134,6 +138,7 @@ namespace Sokoban
         private void Show_SplashLevel()
         {
             closeLabel.Visible = true;
+
             G.I.Start();
             Update_GameField();
         }
@@ -141,13 +146,16 @@ namespace Sokoban
         private void Update_GameField()
         {
             Text = string.IsNullOrEmpty(G.I.Logic.Map.Name.Trim()) ?
-                    G.APP_NAME :
-                    G.I.Logic.Map.Name + " — " + G.APP_NAME;
+                       G.APP_NAME :
+                       $"{G.I.Logic.Map.Name} — {G.APP_NAME}";
 
             G.I.View.Resize(cellSizePx);
             G.I.View.DrawField();
 
-            Size = new Size(G.I.View.Width, G.I.View.Height);
+            Size =
+                new Size(
+                    G.I.View.Width,
+                    G.I.View.Height);
 
             Invalidate();
         }
@@ -248,7 +256,7 @@ namespace Sokoban
             } // switch (e.KeyCode)
 
             if (dir.X != 0 || dir.Y != 0)
-            {
+            {                   
                 WhatsUp whatsup = G.I.Logic.MovePlayer(dir);
 
                 G.I.View.Update();
@@ -274,14 +282,11 @@ namespace Sokoban
         private void Show_LevelDone()
         {
             MessageBox.Show(
-                string.Format(
-                    "Amazing! You win!\nIn {0} steps\nAnd {1} movements of boxes\nBy the time: {2}",
-                    G.I.Logic.Steps,
-                    G.I.Logic.Movements,
-                    G.I.ElapsedTimeLongString), 
+                $"Amazing! You win!\nIn {G.I.Logic.Steps} steps\nAnd {G.I.Logic.Movements} movements of boxes\nBy the time: {G.I.ElapsedTimeLongString}", 
                 "Level Done!");
 
             closeLabel.Visible = false;
+
             G.I.StartNextLevel();
             Update_GameField();
         }
