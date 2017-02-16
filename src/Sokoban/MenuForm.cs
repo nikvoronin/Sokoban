@@ -43,12 +43,6 @@ namespace Sokoban
                 doneToolStripStatusLabel.Text = $"{G.I.Logic.InPlace} ({G.I.Logic.Map?.Plates})";
             }
 
-            helpLabel.Text = @"CURSOR, WASD to move. D-Pad
-ESCAPE to select another level. START
-CTRL+, CTRL- resizes game board. RB, LB
-BACKSPACE to undo last movement. B
-F5 restarts level. BACK";
-
             selectLevelComboBox.DataSource = G.I.Levels;
 
             continueButton.Enabled = !G.I.IsSplashLevel;

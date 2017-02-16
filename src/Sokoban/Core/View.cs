@@ -157,8 +157,6 @@ namespace Sokoban.Core
             Rectangle srcRect = new Rectangle(0, 0, z, z);
             Cell cell = logic.CellAt(hx, vy);
 
-            bool strangeCell = false;
-
             switch (cell)
             {
                 case Cell.Empty:
@@ -193,18 +191,15 @@ namespace Sokoban.Core
                     g.DrawImage(sprites, shift + hx * z, shift + vy * z, srcRect, GraphicsUnit.Pixel);
                     break;
                 default:
-                    strangeCell = true;
+                    if ((byte)cell > 7 && (byte)cell < 255)
+                    {
+                        string str = "" + Convert.ToChar(cell);
+                        srcRect.X = 0;
+                        g.DrawImage(sprites, shift + hx * z, shift + vy * z, srcRect, GraphicsUnit.Pixel);
+                        g.DrawString(str, font, Brushes.White, shift + hx * z, shift + vy * z);
+                    }
                     break;
             } // switch
-
-            if (strangeCell)
-                if ((byte)cell > 7 && (byte)cell < 255)
-                {
-                    string str = "" + Convert.ToChar(cell);
-                    srcRect.X = 0;
-                    g.DrawImage(sprites, shift + hx * z, shift + vy * z, srcRect, GraphicsUnit.Pixel);
-                    g.DrawString(str, font, Brushes.White, shift + hx * z, shift + vy * z);
-                }
         } // DrawCell()
 
         public void DrawPlayer()
