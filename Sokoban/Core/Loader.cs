@@ -6,15 +6,6 @@ namespace Sokoban.Core;
 
 public static class Loader
 {
-    private static bool IsFilePacked(string name)
-    {
-        Stream fs = File.OpenRead(name);
-        bool isPacked = IsFilePacked(fs);
-        fs.Close();
-
-        return isPacked;
-    }
-
     private static bool IsFilePacked(Stream stream)
     {
         long pos = stream.Position;
@@ -32,6 +23,25 @@ public static class Loader
     }
 
     public static List<Level> LoadPack(Stream stream)
+    {
+        return IsFilePacked(stream)
+            ? LoadFromZip(stream)
+            : LoadFromText(stream);
+    }
+
+    private static List<Level> LoadFromZip(Stream packedStream)
+    {
+        List<Level> levels = [];
+        using ZipArchive zip = new(packedStream, ZipArchiveMode.Read);
+        foreach (ZipArchiveEntry entry in zip.Entries)
+        {
+            using Stream entryStream = entry.Open();
+            levels.AddRange(LoadFromText(entryStream));
+        }
+        return levels;
+    }
+
+    private static List<Level> LoadFromText(Stream stream)
     {
         List<Level> levels = [];
 
@@ -78,36 +88,15 @@ public static class Loader
         return levels;
     } // LoadPack(Stream stream)
 
-    private static Stream Unpack(Stream packedStream)
-    {
-        Stream memStream = new MemoryStream();
-        using (ZipArchive zip = new(packedStream, ZipArchiveMode.Read))
-        {
-            using Stream entryStream = zip.Entries[0].Open();
-            entryStream.CopyTo(memStream);
-        }
-        memStream.Seek(0, SeekOrigin.Begin);
-
-        return memStream;
-    }
-
     public static Stream OpenFile(string name)
     {
-        Stream stream = File.OpenRead(name);
-
-        return IsFilePacked(name) 
-            ? Unpack(stream) 
-            : stream;
+        return File.OpenRead(name);
     }
 
     public static Stream OpenEmbeddedResource(string name)
     {
         Assembly asm = Assembly.GetExecutingAssembly();
-        Stream embStream = asm.GetManifestResourceStream(name)
+        return asm.GetManifestResourceStream(name)
             ?? throw new FileNotFoundException($"Embedded resource not found: {name}");
-
-        return IsFilePacked(embStream) 
-            ? Unpack(embStream) 
-            : embStream;
     }
 }

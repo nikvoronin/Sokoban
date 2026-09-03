@@ -5,7 +5,7 @@ namespace Sokoban.Core;
 public sealed class GameContext : IDisposable
 {
     public const string APP_NAME = "Sokoban";
-    public const string EMBEDDED_LEVELS = "Sokoban.Levels.levels.pack";
+    public const string EMBEDDED_LEVELS = "Sokoban.Levels.levels.zip";
     public const string EMBEDDED_MENU = "Sokoban.Levels.menu.pack";
 
     public static GameContext I { get; } = new();

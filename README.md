@@ -65,10 +65,11 @@ ____#######________
 
 ## Levels Pack
 
-Levels are contained in a single text file. You can pack that file into a .zip archive. One .zip contains one level file. Game will automatically recognize zipped files.
+Levels are contained in a single text file. You can pack one or more level files into a single .zip archive — levels from every file inside the archive are loaded and merged into one list. Zip-packed files should use the .zip extension; the game recognizes a zip archive by its content, not by file name.
 
 
 # Command-line
 
 Sokoban.exe<br/>
-Sokoban.exe userDefinedLevels.pack
+Sokoban.exe userDefinedLevels.pack<br/>
+Sokoban.exe userDefinedLevels.zip

@@ -39,7 +39,7 @@
       <DependentUpon>MenuForm.cs</DependentUpon>
     </EmbeddedResource>
 
-    <EmbeddedResource Include="Levels\levels.pack" />
+    <EmbeddedResource Include="Levels\levels.zip" />
     <EmbeddedResource Include="Levels\menu.pack" />
   </ItemGroup>
 
