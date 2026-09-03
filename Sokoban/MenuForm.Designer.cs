@@ -49,6 +49,8 @@
             System.Windows.Forms.Label label13;
             System.Windows.Forms.Label label14;
             System.Windows.Forms.Label label15;
+            System.Windows.Forms.Label packLabel;
+            this.packComboBox = new System.Windows.Forms.ComboBox();
             this.selectLevelComboBox = new System.Windows.Forms.ComboBox();
             this.goButton = new System.Windows.Forms.Button();
             this.continueButton = new System.Windows.Forms.Button();
@@ -78,18 +80,28 @@
             label13 = new System.Windows.Forms.Label();
             label14 = new System.Windows.Forms.Label();
             label15 = new System.Windows.Forms.Label();
+            packLabel = new System.Windows.Forms.Label();
             this.mainStatusStrip.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
+            // packLabel
+            //
+            packLabel.AutoSize = true;
+            packLabel.Location = new System.Drawing.Point(12, 24);
+            packLabel.Name = "packLabel";
+            packLabel.Size = new System.Drawing.Size(31, 13);
+            packLabel.TabIndex = 2;
+            packLabel.Text = "Pack";
+            //
             // label1
-            // 
+            //
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(12, 24);
+            label1.Location = new System.Drawing.Point(12, 54);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(33, 13);
             label1.TabIndex = 2;
             label1.Text = "Level";
-            // 
+            //
             // toolStripStatusLabel1
             // 
             toolStripStatusLabel1.Name = "toolStripStatusLabel1";
@@ -125,7 +137,7 @@
             // 
             helpLabel.AutoSize = true;
             helpLabel.BackColor = System.Drawing.SystemColors.Control;
-            helpLabel.Location = new System.Drawing.Point(49, 53);
+            helpLabel.Location = new System.Drawing.Point(49, 83);
             helpLabel.Name = "helpLabel";
             helpLabel.Size = new System.Drawing.Size(34, 13);
             helpLabel.TabIndex = 8;
@@ -135,7 +147,7 @@
             // 
             label2.AutoSize = true;
             label2.BackColor = System.Drawing.SystemColors.Control;
-            label2.Location = new System.Drawing.Point(49, 79);
+            label2.Location = new System.Drawing.Point(49, 109);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(66, 13);
             label2.TabIndex = 8;
@@ -145,7 +157,7 @@
             // 
             label3.AutoSize = true;
             label3.BackColor = System.Drawing.SystemColors.Control;
-            label3.Location = new System.Drawing.Point(49, 105);
+            label3.Location = new System.Drawing.Point(49, 135);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(81, 13);
             label3.TabIndex = 8;
@@ -155,7 +167,7 @@
             // 
             label4.AutoSize = true;
             label4.BackColor = System.Drawing.SystemColors.Control;
-            label4.Location = new System.Drawing.Point(49, 66);
+            label4.Location = new System.Drawing.Point(49, 96);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(86, 13);
             label4.TabIndex = 8;
@@ -165,7 +177,7 @@
             // 
             label5.AutoSize = true;
             label5.BackColor = System.Drawing.SystemColors.Control;
-            label5.Location = new System.Drawing.Point(49, 92);
+            label5.Location = new System.Drawing.Point(49, 122);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(70, 13);
             label5.TabIndex = 8;
@@ -175,7 +187,7 @@
             // 
             label6.AutoSize = true;
             label6.BackColor = System.Drawing.SystemColors.Control;
-            label6.Location = new System.Drawing.Point(141, 92);
+            label6.Location = new System.Drawing.Point(141, 122);
             label6.Name = "label6";
             label6.Size = new System.Drawing.Size(19, 13);
             label6.TabIndex = 8;
@@ -185,7 +197,7 @@
             // 
             label7.AutoSize = true;
             label7.BackColor = System.Drawing.SystemColors.Control;
-            label7.Location = new System.Drawing.Point(141, 66);
+            label7.Location = new System.Drawing.Point(141, 96);
             label7.Name = "label7";
             label7.Size = new System.Drawing.Size(70, 13);
             label7.TabIndex = 8;
@@ -195,7 +207,7 @@
             // 
             label8.AutoSize = true;
             label8.BackColor = System.Drawing.SystemColors.Control;
-            label8.Location = new System.Drawing.Point(141, 105);
+            label8.Location = new System.Drawing.Point(141, 135);
             label8.Name = "label8";
             label8.Size = new System.Drawing.Size(81, 13);
             label8.TabIndex = 8;
@@ -205,7 +217,7 @@
             // 
             label9.AutoSize = true;
             label9.BackColor = System.Drawing.SystemColors.Control;
-            label9.Location = new System.Drawing.Point(141, 79);
+            label9.Location = new System.Drawing.Point(141, 109);
             label9.Name = "label9";
             label9.Size = new System.Drawing.Size(49, 13);
             label9.TabIndex = 8;
@@ -215,7 +227,7 @@
             // 
             label10.AutoSize = true;
             label10.BackColor = System.Drawing.SystemColors.Control;
-            label10.Location = new System.Drawing.Point(141, 53);
+            label10.Location = new System.Drawing.Point(141, 83);
             label10.Name = "label10";
             label10.Size = new System.Drawing.Size(95, 13);
             label10.TabIndex = 8;
@@ -225,7 +237,7 @@
             // 
             label11.AutoSize = true;
             label11.BackColor = System.Drawing.SystemColors.Control;
-            label11.Location = new System.Drawing.Point(239, 53);
+            label11.Location = new System.Drawing.Point(239, 83);
             label11.Name = "label11";
             label11.Size = new System.Drawing.Size(46, 13);
             label11.TabIndex = 8;
@@ -235,7 +247,7 @@
             // 
             label12.AutoSize = true;
             label12.BackColor = System.Drawing.SystemColors.Control;
-            label12.Location = new System.Drawing.Point(239, 66);
+            label12.Location = new System.Drawing.Point(239, 96);
             label12.Name = "label12";
             label12.Size = new System.Drawing.Size(23, 13);
             label12.TabIndex = 8;
@@ -245,7 +257,7 @@
             // 
             label13.AutoSize = true;
             label13.BackColor = System.Drawing.SystemColors.Control;
-            label13.Location = new System.Drawing.Point(239, 79);
+            label13.Location = new System.Drawing.Point(239, 109);
             label13.Name = "label13";
             label13.Size = new System.Drawing.Size(52, 13);
             label13.TabIndex = 8;
@@ -255,7 +267,7 @@
             // 
             label14.AutoSize = true;
             label14.BackColor = System.Drawing.SystemColors.Control;
-            label14.Location = new System.Drawing.Point(239, 92);
+            label14.Location = new System.Drawing.Point(239, 122);
             label14.Name = "label14";
             label14.Size = new System.Drawing.Size(44, 13);
             label14.TabIndex = 8;
@@ -265,28 +277,40 @@
             // 
             label15.AutoSize = true;
             label15.BackColor = System.Drawing.SystemColors.Control;
-            label15.Location = new System.Drawing.Point(239, 105);
+            label15.Location = new System.Drawing.Point(239, 135);
             label15.Name = "label15";
             label15.Size = new System.Drawing.Size(53, 13);
             label15.TabIndex = 8;
             label15.Text = ".. RB   LB";
-            // 
+            //
+            // packComboBox
+            //
+            this.packComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.packComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.packComboBox.FormattingEnabled = true;
+            this.packComboBox.Location = new System.Drawing.Point(52, 21);
+            this.packComboBox.Name = "packComboBox";
+            this.packComboBox.Size = new System.Drawing.Size(261, 21);
+            this.packComboBox.TabIndex = 4;
+            this.packComboBox.SelectedIndexChanged += new System.EventHandler(this.PackComboBox_SelectedIndexChanged);
+            //
             // selectLevelComboBox
-            // 
-            this.selectLevelComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.selectLevelComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.selectLevelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selectLevelComboBox.FormattingEnabled = true;
-            this.selectLevelComboBox.Location = new System.Drawing.Point(52, 21);
+            this.selectLevelComboBox.Location = new System.Drawing.Point(52, 51);
             this.selectLevelComboBox.Name = "selectLevelComboBox";
             this.selectLevelComboBox.Size = new System.Drawing.Size(261, 21);
             this.selectLevelComboBox.TabIndex = 2;
             this.selectLevelComboBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SelectLevelComboBox_KeyUp);
-            // 
+            //
             // goButton
             // 
             this.goButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.goButton.Location = new System.Drawing.Point(319, 19);
+            this.goButton.Location = new System.Drawing.Point(319, 49);
             this.goButton.Name = "goButton";
             this.goButton.Size = new System.Drawing.Size(75, 23);
             this.goButton.TabIndex = 3;
@@ -298,7 +322,7 @@
             // 
             this.continueButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.continueButton.Enabled = false;
-            this.continueButton.Location = new System.Drawing.Point(319, 48);
+            this.continueButton.Location = new System.Drawing.Point(319, 78);
             this.continueButton.Name = "continueButton";
             this.continueButton.Size = new System.Drawing.Size(75, 23);
             this.continueButton.TabIndex = 0;
@@ -316,7 +340,7 @@
             toolStripStatusLabel5,
             this.timeToolStripStatusLabel,
             toolStripStatusLabel2});
-            this.mainStatusStrip.Location = new System.Drawing.Point(0, 141);
+            this.mainStatusStrip.Location = new System.Drawing.Point(0, 171);
             this.mainStatusStrip.Name = "mainStatusStrip";
             this.mainStatusStrip.Size = new System.Drawing.Size(408, 30);
             this.mainStatusStrip.TabIndex = 7;
@@ -343,7 +367,7 @@
             // quitButton
             // 
             this.quitButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.quitButton.Location = new System.Drawing.Point(319, 105);
+            this.quitButton.Location = new System.Drawing.Point(319, 135);
             this.quitButton.Name = "quitButton";
             this.quitButton.Size = new System.Drawing.Size(75, 23);
             this.quitButton.TabIndex = 1;
@@ -362,7 +386,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(408, 171);
+            this.ClientSize = new System.Drawing.Size(408, 201);
+            this.Controls.Add(packLabel);
+            this.Controls.Add(this.packComboBox);
             this.Controls.Add(label11);
             this.Controls.Add(label10);
             this.Controls.Add(label13);
@@ -385,7 +411,7 @@
             this.Controls.Add(label1);
             this.Controls.Add(this.selectLevelComboBox);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(424, 210);
+            this.MinimumSize = new System.Drawing.Size(424, 240);
             this.Name = "MenuForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Sokoban";
@@ -399,6 +425,7 @@
         }
 
         #endregion
+        private System.Windows.Forms.ComboBox packComboBox;
         private System.Windows.Forms.ComboBox selectLevelComboBox;
         private System.Windows.Forms.Button goButton;
         private System.Windows.Forms.Button continueButton;

@@ -22,23 +22,23 @@ public static class Loader
             && buffer[1] == 'K';
     }
 
-    public static List<Level> LoadPack(Stream stream)
+    public static List<LevelPack> LoadPack(Stream stream, string name)
     {
         return IsFilePacked(stream)
             ? LoadFromZip(stream)
-            : LoadFromText(stream);
+            : [new LevelPack(Path.GetFileNameWithoutExtension(name), LoadFromText(stream))];
     }
 
-    private static List<Level> LoadFromZip(Stream packedStream)
+    private static List<LevelPack> LoadFromZip(Stream packedStream)
     {
-        List<Level> levels = [];
+        List<LevelPack> packs = [];
         using ZipArchive zip = new(packedStream, ZipArchiveMode.Read);
         foreach (ZipArchiveEntry entry in zip.Entries)
         {
             using Stream entryStream = entry.Open();
-            levels.AddRange(LoadFromText(entryStream));
+            packs.Add(new LevelPack(Path.GetFileNameWithoutExtension(entry.Name), LoadFromText(entryStream)));
         }
-        return levels;
+        return packs;
     }
 
     private static List<Level> LoadFromText(Stream stream)
@@ -82,6 +82,9 @@ public static class Loader
                     break;
             }
         } // while ((lineBuffer = reader.ReadLine()) != null)
+
+        if (blockNo == 1)
+            levels.Add(new Level(name, builder.ToString()));
 
         reader.Close();
 

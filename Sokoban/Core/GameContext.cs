@@ -23,7 +23,7 @@ public sealed class GameContext : IDisposable
 
     public X.Gamepad? Gamepad;
 
-    public readonly List<Level> Levels = [];
+    public readonly List<LevelPack> Packs = [];
     private Level splashLevel = null!; // set by Load(), always called before Start()
     bool isSplashLevel = false;
     public bool IsSplashLevel => isSplashLevel;
@@ -43,9 +43,10 @@ public sealed class GameContext : IDisposable
 
     public void StartNextLevel()
     {
-        int idx = Levels.IndexOf(logic.Map) + 1;
-        if (idx < Levels.Count)
-            StartLevel(Levels[idx]);
+        List<Level> allLevels = [.. Packs.SelectMany(p => p.Levels)];
+        int idx = allLevels.IndexOf(logic.Map) + 1;
+        if (idx < allLevels.Count)
+            StartLevel(allLevels[idx]);
         else
             Start(); // no more levels: back to the splash level instead of crashing
     }
@@ -68,18 +69,16 @@ public sealed class GameContext : IDisposable
         foreach (string name in args)
         {
             Stream stream = Loader.OpenFile(name);
-            List<Level> levels = Loader.LoadPack(stream);
-            Levels.AddRange(levels);
+            Packs.AddRange(Loader.LoadPack(stream, name));
             stream.Close();
         }
 
         Stream embStream = Loader.OpenEmbeddedResource(EMBEDDED_LEVELS);
-        List<Level> embLevels = Loader.LoadPack(embStream);
-        Levels.AddRange(embLevels);
+        Packs.AddRange(Loader.LoadPack(embStream, EMBEDDED_LEVELS));
         embStream.Close();
 
         embStream = Loader.OpenEmbeddedResource(EMBEDDED_MENU);
-        splashLevel = Loader.LoadPack(embStream)[0];
+        splashLevel = Loader.LoadPack(embStream, EMBEDDED_MENU)[0].Levels[0];
         embStream.Close();
     }
 

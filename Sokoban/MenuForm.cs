@@ -41,15 +41,33 @@ public partial class MenuForm : Form
             doneToolStripStatusLabel.Text = $"{GameContext.I.Logic.InPlace} ({GameContext.I.Logic.Map?.Plates})";
         }
 
-        selectLevelComboBox.DataSource = GameContext.I.Levels;
+        packComboBox.DataSource = GameContext.I.Packs;
 
         continueButton.Enabled = !GameContext.I.IsSplashLevel;
 
-        if (GameContext.I.Logic?.Map != null)
-            selectLevelComboBox.SelectedItem = GameContext.I.Logic.Map;
+        Level? currentMap = GameContext.I.Logic?.Map;
+        LevelPack? currentPack = currentMap != null
+            ? GameContext.I.Packs.FirstOrDefault(p => p.Levels.Contains(currentMap))
+            : null;
+
+        if (currentPack != null)
+            packComboBox.SelectedItem = currentPack;
         else
-            if (selectLevelComboBox.Items.Count > 0)
-                selectLevelComboBox.SelectedIndex = 0;
+        {
+            LevelPack? defaultPack = GameContext.I.Packs.FirstOrDefault(p => p.Name == "Rabbit");
+            if (defaultPack != null)
+                packComboBox.SelectedItem = defaultPack;
+            else if (packComboBox.Items.Count > 0)
+                packComboBox.SelectedIndex = 0;
+        }
+
+        if (currentMap != null)
+            selectLevelComboBox.SelectedItem = currentMap;
+    }
+
+    private void PackComboBox_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        selectLevelComboBox.DataSource = (packComboBox.SelectedItem as LevelPack)?.Levels;
     }
 
     private void UpdateElapsedTime()
@@ -93,13 +111,11 @@ public partial class MenuForm : Form
         switch (k)
         {
             case Keys.Up:
-                if (selectLevelComboBox.SelectedIndex > 0)
-                    selectLevelComboBox.SelectedIndex--;
+                AdjustSelection(-1);
                 break;
 
             case Keys.Down:
-                if (selectLevelComboBox.SelectedIndex < selectLevelComboBox.Items.Count - 1)
-                    selectLevelComboBox.SelectedIndex++;
+                AdjustSelection(1);
                 break;
 
             case Keys.Back:
@@ -110,6 +126,16 @@ public partial class MenuForm : Form
                 if (selectLevelComboBox.SelectedValue != null)
                     GoButton_Click(this, EventArgs.Empty);
                 break;
+        }
+    }
+
+    private void AdjustSelection(int delta)
+    {
+        if (ActiveControl is ComboBox combo)
+        {
+            int next = combo.SelectedIndex + delta;
+            if (next >= 0 && next < combo.Items.Count)
+                combo.SelectedIndex = next;
         }
     }
 } // class
