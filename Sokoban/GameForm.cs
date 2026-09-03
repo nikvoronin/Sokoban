@@ -19,6 +19,7 @@ public partial class GameForm : Form
     int cellSizePx = 25;
     bool avoidSplashLevel = false;
     bool isShowSelectLevel = false;
+    MenuForm? currentMenuForm = null;
 
     public GameForm(bool showSelectLevelMenu = false)
     {
@@ -34,55 +35,37 @@ public partial class GameForm : Form
 
     private void GameForm_Load(object sender, EventArgs e)
     {
-        if (G.I.Gamepad != null)
+        if (GameContext.I.Gamepad != null)
         {
-            G.I.Gamepad.KeyDown += Gamepad_KeyDown;
-            G.I.Gamepad.StateChanged += Gamepad_StateChanged;
-            X.StartPolling(G.I.Gamepad);
+            GameContext.I.Gamepad.KeyDown += Gamepad_KeyDown;
+            GameContext.I.Gamepad.StateChanged += Gamepad_StateChanged;
+            X.StartPolling(GameContext.I.Gamepad);
         }
 
         if (!avoidSplashLevel)
             Show_SplashLevel();
         else
         {
-            G.I.Start();
+            GameContext.I.Start();
             Show_SelectLevelForm();
         }
     }
 
     long startDelta = 0;
-    private void Gamepad_StateChanged(object sender, EventArgs e)
+    private void Gamepad_StateChanged(object? sender, EventArgs e)
     {
-        X.Gamepad gpad = G.I.Gamepad;
         Keys k = GamepadToKeys();
         if (k != Keys.None)
         {
             startDelta = DateTime.UtcNow.Ticks;
             if (isShowSelectLevel)
-                TranslateGamepadButtons(k);
+                currentMenuForm?.HandleGamepadKey(k);
             else
                 Do_Keys(new KeyEventArgs(k));
         }
     }
 
-    private void TranslateGamepadButtons(Keys k)
-    {
-        string thisKey = "";
-        switch(k)
-        {
-            case Keys.Up:    thisKey = "{UP}";      break;
-            case Keys.Down:  thisKey = "{DOWN}";    break;
-            case Keys.Left:  thisKey = "{LEFT}";    break;
-            case Keys.Right: thisKey = "{RIGHT}";   break;
-            case Keys.Back:  thisKey = "{TAB}";     break;
-            case Keys.Enter: thisKey = "~";         break;
-        }
-
-        if (!string.IsNullOrEmpty(thisKey))
-            SendKeys.Send(thisKey);
-    }
-
-    private void Gamepad_KeyDown(object sender, EventArgs e)
+    private void Gamepad_KeyDown(object? sender, EventArgs e)
     {
         if (isShowSelectLevel)
             return;
@@ -98,7 +81,7 @@ public partial class GameForm : Form
     private Keys GamepadToKeys()
     {
         Keys keys = Keys.None;
-        X.Gamepad gpad = G.I.Gamepad;
+        X.Gamepad gpad = GameContext.I.Gamepad!; // only called while Gamepad != null (see GameForm_Load)
 
         if (gpad.Dpad_Down_down)
             keys = Keys.Down;
@@ -137,23 +120,23 @@ public partial class GameForm : Form
     {
         closeLabel.Visible = true;
 
-        G.I.Start();
+        GameContext.I.Start();
         Update_GameField();
     }
 
     private void Update_GameField()
     {
-        Text = string.IsNullOrEmpty(G.I.Logic.Map.Name.Trim()) ?
-                    G.APP_NAME :
-                    $"{G.I.Logic.Map.Name} — {G.APP_NAME}";
+        Text = string.IsNullOrEmpty(GameContext.I.Logic.Map.Name.Trim()) ?
+                    GameContext.APP_NAME :
+                    $"{GameContext.I.Logic.Map.Name} — {GameContext.APP_NAME}";
 
-        G.I.View.Resize(cellSizePx);
-        G.I.View.DrawField();
+        GameContext.I.View.Resize(cellSizePx);
+        GameContext.I.View.DrawField();
 
         Size =
             new Size(
-                G.I.View.Width,
-                G.I.View.Height);
+                GameContext.I.View.Width,
+                GameContext.I.View.Height);
 
         Invalidate();
     }
@@ -161,8 +144,10 @@ public partial class GameForm : Form
     private void Show_SelectLevelForm()
     {
         isShowSelectLevel = true;
-        MenuForm menuForm = new MenuForm();
+        MenuForm menuForm = new();
+        currentMenuForm = menuForm;
         DialogResult result = menuForm.ShowDialog(this);
+        currentMenuForm = null;
         isShowSelectLevel = false;
 
         switch (result)
@@ -175,7 +160,7 @@ public partial class GameForm : Form
                 break;
 
             case DialogResult.OK:       // start thinking over new level
-                Level level = menuForm.Tag as Level;
+                Level? level = menuForm.Tag as Level;
                 if (level == null)
                     Close();
                 else
@@ -187,7 +172,7 @@ public partial class GameForm : Form
     private void RestartLevel(Level level)
     {
         closeLabel.Visible = false;
-        G.I.Start(level);
+        GameContext.I.Start(level);
         Update_GameField();
     }
 
@@ -198,7 +183,7 @@ public partial class GameForm : Form
         switch (e.KeyCode)
         {
             case Keys.Escape:
-                if (!G.I.IsSplashLevel)
+                if (!GameContext.I.IsSplashLevel)
                     Show_SelectLevelForm();
                 break;
 
@@ -220,88 +205,100 @@ public partial class GameForm : Form
                 break;
             case Keys.Oemplus:
                 if (e.Control)
-                {
-                    cellSizePx++;
-                    Update_GameField();
-                }
+                    HandleZoom(1);
                 break;
             case Keys.OemMinus:
-                if (e.Control && cellSizePx > 10)
-                {
-                    cellSizePx--;
-                    Update_GameField();
-                }
+                if (e.Control)
+                    HandleZoom(-1);
                 break;
             case Keys.Add:
-                cellSizePx++;
-                Update_GameField();
+                HandleZoom(1);
                 break;
             case Keys.Subtract:
-                if (cellSizePx > 10)
-                {
-                    cellSizePx--;
-                    Update_GameField();
-                }
+                HandleZoom(-1);
                 break;
             case Keys.Back:
-                G.I.Logic.Undo();
-                G.I.View.Update();
-                Invalidate();
+                HandleUndo();
                 break;
             case Keys.F5:
-                RestartLevel(G.I.Logic.Map);
+                RestartLevel(GameContext.I.Logic.Map);
                 break;
         } // switch (e.KeyCode)
 
         if (dir.X != 0 || dir.Y != 0)
-        {                   
-            WhatsUp whatsup = G.I.Logic.MovePlayer(dir);
-
-            G.I.View.Update();
-            Invalidate();
-
-            switch(whatsup)
-            {
-                case WhatsUp.Win:
-                    if (G.I.IsSplashLevel)
-                        Show_SelectLevelForm();
-                    else
-                        Show_LevelDone();
-                    break;
-
-                case WhatsUp.Nothing:
-                    if (G.I.Logic.PlayerHx > 38)
-                        Close();
-                    break;
-            } // switch(whatsup)
-        } // if (dir.X != 0 || dir.Y != 0)
+            HandleMovement(dir);
     } // Do_Keys()
+
+    private void HandleZoom(int delta)
+    {
+        if (delta > 0)
+            cellSizePx++;
+        else if (cellSizePx > 10)
+            cellSizePx--;
+        else
+            return;
+
+        Update_GameField();
+    }
+
+    private void HandleUndo()
+    {
+        GameContext.I.Logic.Undo();
+        GameContext.I.View.Update();
+        Invalidate();
+    }
+
+    private void HandleMovement(Point dir)
+    {
+        WhatsUp whatsup = GameContext.I.Logic.MovePlayer(dir);
+
+        GameContext.I.View.Update();
+        Invalidate();
+
+        switch (whatsup)
+        {
+            case WhatsUp.Win:
+                if (GameContext.I.IsSplashLevel)
+                    Show_SelectLevelForm();
+                else
+                    Show_LevelDone();
+                break;
+
+            case WhatsUp.Nothing:
+                if (GameContext.I.Logic.PlayerX > 38)
+                    Close();
+                break;
+        } // switch(whatsup)
+    } // HandleMovement()
 
     private void Show_LevelDone()
     {
         MessageBox.Show(
-            $"Amazing! You win!\nIn {G.I.Logic.Steps} steps\nAnd {G.I.Logic.Movements} movements of boxes\nBy the time: {G.I.ElapsedTimeLongString}", 
+            $"Amazing! You win!\nIn {GameContext.I.Logic.Steps} steps\nAnd {GameContext.I.Logic.Movements} movements of boxes\nBy the time: {GameContext.I.ElapsedTimeLongString}", 
             "Level Done!");
 
         closeLabel.Visible = false;
 
-        G.I.StartNextLevel();
+        GameContext.I.StartNextLevel();
         Update_GameField();
     }
 
     private void GameForm_Paint(object sender, PaintEventArgs e)
     {
-        if (G.I.View?.Canvas != null)
-            e.Graphics.DrawImageUnscaled(G.I.View.Canvas, 0, 0);
+        if (GameContext.I.View?.Canvas != null)
+            e.Graphics.DrawImageUnscaled(GameContext.I.View.Canvas, 0, 0);
     }
 
     private void GameForm_MouseDown(object sender, MouseEventArgs e)
     {
         if (e.Button == MouseButtons.Left)
-        {
-            ReleaseCapture();
+            DragMoveWindow();
+    }
+
+    private void DragMoveWindow()
+    {
+        if (ReleaseCapture())
             SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-        }
     }
 
     private void GameForm_KeyDown(object sender, KeyEventArgs e)
@@ -316,7 +313,7 @@ public partial class GameForm : Form
 
     private void GameForm_FormClosing(object sender, FormClosingEventArgs e)
     {
-        if(G.I.Gamepad != null)
+        if(GameContext.I.Gamepad != null)
             X.StopPolling();
     }
 }

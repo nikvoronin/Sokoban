@@ -25,19 +25,22 @@ public static class Loader
         stream.Seek(pos, SeekOrigin.Begin);
 
         // PK - 2 bytes length .zip signature
-        return readed == 2 && buffer[0] == 'P' && buffer[1] == 'K';
+        return 
+            readed == 2 
+            && buffer[0] == 'P' 
+            && buffer[1] == 'K';
     }
 
     public static List<Level> LoadPack(Stream stream)
     {
-        List<Level> levels = new List<Level>();
+        List<Level> levels = [];
 
         TextReader reader = new StreamReader(stream);
 
-        string lineBuffer;
+        string? lineBuffer;
         int blockNo = 0;
         string name = "";
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new();
         while ((lineBuffer = reader.ReadLine()) != null)
         {
             if (blockNo == 1)
@@ -46,7 +49,7 @@ public static class Loader
                 {
                     string rawMap = builder.ToString();
 
-                    Level newLevel = new Level(name, rawMap);
+                    Level newLevel = new(name, rawMap);
                     levels.Add(newLevel);
 
                     name = "";
@@ -63,6 +66,7 @@ public static class Loader
                     name = lineBuffer.Trim();
                     blockNo = 1;
                     break;
+
                 case 1: // level map
                     builder.AppendLine(lineBuffer);
                     break;
@@ -77,12 +81,10 @@ public static class Loader
     private static Stream Unpack(Stream packedStream)
     {
         Stream memStream = new MemoryStream();
-        using (ZipArchive zip = new ZipArchive(packedStream, ZipArchiveMode.Read))
+        using (ZipArchive zip = new(packedStream, ZipArchiveMode.Read))
         {
-            using (Stream entryStream = zip.Entries[0].Open())
-            {
-                entryStream.CopyTo(memStream);
-            }
+            using Stream entryStream = zip.Entries[0].Open();
+            entryStream.CopyTo(memStream);
         }
         memStream.Seek(0, SeekOrigin.Begin);
 
@@ -93,20 +95,19 @@ public static class Loader
     {
         Stream stream = File.OpenRead(name);
 
-        return
-            IsFilePacked(name) ?
-                Unpack(stream) :
-                stream;
+        return IsFilePacked(name) 
+            ? Unpack(stream) 
+            : stream;
     }
 
     public static Stream OpenEmbeddedResource(string name)
     {
         Assembly asm = Assembly.GetExecutingAssembly();
-        Stream embStream = asm.GetManifestResourceStream(name);
+        Stream embStream = asm.GetManifestResourceStream(name)
+            ?? throw new FileNotFoundException($"Embedded resource not found: {name}");
 
-        return
-            IsFilePacked(embStream) ?
-                Unpack(embStream) :
-                embStream;
+        return IsFilePacked(embStream) 
+            ? Unpack(embStream) 
+            : embStream;
     }
 }

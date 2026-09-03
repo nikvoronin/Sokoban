@@ -1,40 +1,37 @@
-﻿using XInput.Wrapper;
+using XInput.Wrapper;
 
 namespace Sokoban.Core;
 
-public sealed class G : IDisposable
+public sealed class GameContext : IDisposable
 {
     public const string APP_NAME = "Sokoban";
     public const string EMBEDDED_LEVELS = "Sokoban.Levels.levels.pack";
     public const string EMBEDDED_MENU = "Sokoban.Levels.menu.pack";
 
-    public static G I { get; } = new();
+    public static GameContext I { get; } = new();
 
-    private G()
+    private GameContext()
     {
         Gamepad = X.IsAvailable ? X.Gamepad_1 : null;
     }
 
     private DateTime startTime = DateTime.Now;
-    private Logic logic;
-    public Logic Logic { get { return logic; } }
-    private View view;
-    public View View { get { return view; } }
+    private Logic logic = null!;   // set by StartLevel(), always called before Logic is read
+    public Logic Logic => logic;
+    private View view = null!;     // set by StartLevel(), always called before View is read
+    public View View => view;
 
-    public X.Gamepad Gamepad = null;
+    public X.Gamepad? Gamepad;
 
-    public readonly List<Level> Levels = new List<Level>();
-    private Level splashLevel;
+    public readonly List<Level> Levels = [];
+    private Level splashLevel = null!; // set by Load(), always called before Start()
     bool isSplashLevel = false;
-    public bool IsSplashLevel { get { return isSplashLevel; } }
+    public bool IsSplashLevel => isSplashLevel;
 
-    public void Start(Level level = null)
+    public void Start(Level? level = null)
     {
         isSplashLevel = level == null;
-        StartLevel(
-            isSplashLevel ?
-                splashLevel :
-                level);
+        StartLevel(level ?? splashLevel);
     }
 
     private void StartLevel(Level level)
@@ -47,10 +44,10 @@ public sealed class G : IDisposable
     public void StartNextLevel()
     {
         int idx = Levels.IndexOf(logic.Map) + 1;
-        StartLevel(
-            idx < Levels.Count ?
-                Levels[idx] :
-                null);
+        if (idx < Levels.Count)
+            StartLevel(Levels[idx]);
+        else
+            Start(); // no more levels: back to the splash level instead of crashing
     }
 
     public string ElapsedTimeLongString
@@ -58,13 +55,11 @@ public sealed class G : IDisposable
         get
         {
             TimeSpan span = TimeSpan.FromTicks(DateTime.Now.Ticks - startTime.Ticks);
-            return
-                string.Format("{0}{1}:{2}:{3}",
-                    span.Days > 0 ? span.Days.ToString() + "d " : "",
-                    span.Hours,
-                    span.Minutes.ToString("00"),
-                    span.Seconds.ToString("00")
-                    );
+            return string.Format("{0}{1}:{2}:{3}",
+                span.Days > 0 ? span.Days.ToString() + "d " : "",
+                span.Hours,
+                span.Minutes.ToString("00"),
+                span.Seconds.ToString("00"));
         }
     }
 
@@ -86,17 +81,6 @@ public sealed class G : IDisposable
         embStream = Loader.OpenEmbeddedResource(EMBEDDED_MENU);
         splashLevel = Loader.LoadPack(embStream)[0];
         embStream.Close();
-    }
-
-    public void Win()
-    {
-        // STUB
-        SaveRecordTable();
-    }
-
-    private void SaveRecordTable()
-    {
-        // STUB
     }
 
     public void Dispose()

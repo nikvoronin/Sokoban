@@ -7,7 +7,7 @@ static class Program
     [STAThread]
     static void Main(string[] args)
     {
-        G.I.Load(args);
+        GameContext.I.Load(args);
 
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);

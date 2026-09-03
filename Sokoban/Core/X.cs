@@ -28,8 +28,7 @@ namespace XInput.Wrapper
 
         public static void StartPolling(Gamepad slot0, Gamepad slot1 = null, Gamepad slot2 = null, Gamepad slot3 = null)
         {
-            List<Gamepad> updateSlots = new List<Gamepad>();
-            updateSlots.Add(slot0);
+            List<Gamepad> updateSlots = [slot0];
             if (slot1 != null)
                 updateSlots.Add(slot1);
             if (slot2 != null)

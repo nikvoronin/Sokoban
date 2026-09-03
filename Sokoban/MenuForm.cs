@@ -31,22 +31,22 @@ public partial class MenuForm : Form
 
     private void MenuForm_Load(object sender, EventArgs e)
     {
-        if (G.I.Logic != null)
+        if (GameContext.I.Logic != null)
         {
-            Text = string.IsNullOrEmpty(G.I.Logic.Map?.Name.Trim()) ?
-                    G.APP_NAME :
-                    G.I.Logic.Map.Name + " — " + G.APP_NAME;
+            Text = string.IsNullOrEmpty(GameContext.I.Logic.Map?.Name.Trim()) ?
+                    GameContext.APP_NAME :
+                    GameContext.I.Logic.Map.Name + " — " + GameContext.APP_NAME;
 
-            stepsToolStripStatusLabel.Text = $"{G.I.Logic.Steps}:{G.I.Logic.Movements}";
-            doneToolStripStatusLabel.Text = $"{G.I.Logic.InPlace} ({G.I.Logic.Map?.Plates})";
+            stepsToolStripStatusLabel.Text = $"{GameContext.I.Logic.Steps}:{GameContext.I.Logic.Movements}";
+            doneToolStripStatusLabel.Text = $"{GameContext.I.Logic.InPlace} ({GameContext.I.Logic.Map?.Plates})";
         }
 
-        selectLevelComboBox.DataSource = G.I.Levels;
+        selectLevelComboBox.DataSource = GameContext.I.Levels;
 
-        continueButton.Enabled = !G.I.IsSplashLevel;
+        continueButton.Enabled = !GameContext.I.IsSplashLevel;
 
-        if (G.I.Logic?.Map != null)
-            selectLevelComboBox.SelectedItem = G.I.Logic.Map;
+        if (GameContext.I.Logic?.Map != null)
+            selectLevelComboBox.SelectedItem = GameContext.I.Logic.Map;
         else
             if (selectLevelComboBox.Items.Count > 0)
                 selectLevelComboBox.SelectedIndex = 0;
@@ -54,7 +54,7 @@ public partial class MenuForm : Form
 
     private void UpdateElapsedTime()
     {
-        timeToolStripStatusLabel.Text = G.I.ElapsedTimeLongString ?? "";
+        timeToolStripStatusLabel.Text = GameContext.I.ElapsedTimeLongString ?? "";
     }
 
     private void ClockTimer_Tick(object sender, EventArgs e)
@@ -71,7 +71,7 @@ public partial class MenuForm : Form
 
     private void MenuForm_Shown(object sender, EventArgs e)
     {
-        if (G.I.IsSplashLevel)
+        if (GameContext.I.IsSplashLevel)
         { 
             selectLevelComboBox.Focus();
         }
@@ -85,6 +85,31 @@ public partial class MenuForm : Form
             {
                 GoButton_Click(sender, EventArgs.Empty);
             }
+        }
+    }
+
+    public void HandleGamepadKey(Keys k)
+    {
+        switch (k)
+        {
+            case Keys.Up:
+                if (selectLevelComboBox.SelectedIndex > 0)
+                    selectLevelComboBox.SelectedIndex--;
+                break;
+
+            case Keys.Down:
+                if (selectLevelComboBox.SelectedIndex < selectLevelComboBox.Items.Count - 1)
+                    selectLevelComboBox.SelectedIndex++;
+                break;
+
+            case Keys.Back:
+                SelectNextControl(ActiveControl, true, true, true, true);
+                break;
+
+            case Keys.Enter:
+                if (selectLevelComboBox.SelectedValue != null)
+                    GoButton_Click(this, EventArgs.Empty);
+                break;
         }
     }
 } // class

@@ -5,26 +5,26 @@
 /// </summary>
 public class Logic
 {
-    public readonly Level Map = null;  // template of the level
-    Cell[,] cells = null;              // editable instance of the current level
+    public readonly Level Map;  // template of the level
+    Cell[,] cells;              // editable instance of the current level
 
-    int playerHx = 0;
-    int playerVy = 0;
+    int playerX = 0;
+    int playerY = 0;
     Point playerDir = Point.Empty;
 
     int steps = 0;
     int movements = 0;
     int inPlace = 0;
 
-    public int Steps { get { return steps; } }
-    public int Movements { get { return movements; } }
-    public int InPlace { get { return inPlace; } }
-    public int PlayerHx { get { return playerHx; } }
-    public int PlayerVy { get { return playerVy; } }
-    public Point PlayerDir { get { return playerDir; } }
+    public int Steps => steps;
+    public int Movements => movements;
+    public int InPlace => inPlace;
+    public int PlayerX => playerX;
+    public int PlayerY => playerY;
+    public Point PlayerDir => playerDir;
 
-    public readonly List<Point> CellsChanged = new List<Point>();
-    private Stack<Action> history = new Stack<Action>();
+    public readonly List<Point> CellsChanged = [];
+    private readonly Stack<Action> history = new();
 
     public Logic(Level map)
     {
@@ -32,24 +32,24 @@ public class Logic
         Map = map;
         cells = (Cell[,])Map.Cells.Clone();
         inPlace = Map.InPlace;
-        playerHx = Map.StartAt.X;
-        playerVy = Map.StartAt.Y;
+        playerX = Map.StartAt.X;
+        playerY = Map.StartAt.Y;
     }
 
-    public Cell CellAt(int hx, int vy)
+    public Cell CellAt(int x, int y)
     {
-        return cells[hx, vy];
+        return cells[x, y];
     }
 
     private bool CanPlayerMove(Point dir)
     {
         bool canMove = false;
 
-        int newX = playerHx + dir.X;
-        int newY = playerVy + dir.Y;
+        int newX = playerX + dir.X;
+        int newY = playerY + dir.Y;
 
-        if (newX > -1 && newX < Map.WidthHx &&
-            newY > -1 && newY < Map.HeightVy)
+        if (newX > -1 && newX < Map.Width &&
+            newY > -1 && newY < Map.Height)
         {
             canMove =
                 cells[newX, newY] == Cell.Empty ||
@@ -63,20 +63,20 @@ public class Logic
     {
         bool canPush = false;
 
-        int newX = playerHx + dir.X;
-        int newY = playerVy + dir.Y;
+        int newX = playerX + dir.X;
+        int newY = playerY + dir.Y;
 
         int nextX = newX + dir.X;
         int nextY = newY + dir.Y;
 
-        if (nextX > -1 && nextX < Map.WidthHx &&
-            nextY > -1 && nextY < Map.HeightVy)
+        if (nextX > -1 && nextX < Map.Width &&
+            nextY > -1 && nextY < Map.Height)
         {
             canPush =
                 (cells[newX, newY] != Cell.Wall)
                 &&
-                (cells[nextX, nextY] == Cell.Empty ||
-                    cells[nextX, nextY] == Cell.Plate);
+                (cells[nextX, nextY] == Cell.Empty
+                    || cells[nextX, nextY] == Cell.Plate);
         }
 
         return canPush;
@@ -87,44 +87,44 @@ public class Logic
         WhatsUp result = WhatsUp.Move;
         movements++;
 
-        int fromHx = from.X;
-        int fromVy = from.Y;
+        int fromX = from.X;
+        int fromY = from.Y;
 
-        Cell cfrom = cells[fromHx, fromVy];
+        Cell cfrom = cells[fromX, fromY];
         if (cfrom != Cell.BarrelOnPlate)
-            cells[fromHx, fromVy] = Cell.Empty;
+            cells[fromX, fromY] = Cell.Empty;
         else
         {
             cfrom = Cell.Barrel;
-            cells[fromHx, fromVy] = Cell.Plate;
+            cells[fromX, fromY] = Cell.Plate;
             inPlace--;
         }
 
-        int toHx = to.X;
-        int toVy = to.Y;
+        int toX = to.X;
+        int toY = to.Y;
 
-        if (cells[toHx, toVy] != Cell.Plate)
-            cells[toHx, toVy] = cfrom;
+        if (cells[toX, toY] != Cell.Plate)
+            cells[toX, toY] = cfrom;
         else
         {
-            cells[toHx, toVy] = Cell.BarrelOnPlate;
+            cells[toX, toY] = Cell.BarrelOnPlate;
             inPlace++;
             result = WhatsUp.InPlace;
         }
 
-        CellsChanged.Add(new Point(fromHx, fromVy));
-        CellsChanged.Add(new Point(toHx, toVy));
+        CellsChanged.Add(new Point(fromX, fromY));
+        CellsChanged.Add(new Point(toX, toY));
 
         return result;
     }
 
     private WhatsUp MoveObjectRelative(Point dir)
     {
-        Point from = new Point(
-            playerHx + dir.X,
-            playerVy + dir.Y);
+        Point from = new(
+            playerX + dir.X,
+            playerY + dir.Y);
 
-        Point to = new Point(
+        Point to = new(
             from.X + dir.X,
             from.Y + dir.Y);
 
@@ -140,14 +140,14 @@ public class Logic
     {
         CellsChanged.Clear();
         WhatsUp result = WhatsUp.Nothing;
-        Action act = new Action();
+        Action act = new();
 
-        CellsChanged.Add(new Point(playerHx, playerVy));
+        CellsChanged.Add(new Point(playerX, playerY));
         if (CanPlayerMove(dir))
         {
-            playerHx += dir.X;
-            playerVy += dir.Y;
-            CellsChanged.Add(new Point(playerHx, playerVy));
+            playerX += dir.X;
+            playerY += dir.Y;
+            CellsChanged.Add(new Point(playerX, playerY));
             act.PlayerMove = dir;
 
             steps++;
@@ -159,10 +159,10 @@ public class Logic
             {
                 result = MoveObjectRelative(dir);
 
-                CellsChanged.Add(new Point(playerHx, playerVy));
-                playerHx += dir.X;
-                playerVy += dir.Y;
-                CellsChanged.Add(new Point(playerHx, playerVy));
+                CellsChanged.Add(new Point(playerX, playerY));
+                playerX += dir.X;
+                playerY += dir.Y;
+                CellsChanged.Add(new Point(playerX, playerY));
                 act.PlayerMove = dir;
                 act.IsBarrelMovedToo = true;
 
@@ -183,7 +183,6 @@ public class Logic
             inPlace == Map.Barrels)
         {
             result = WhatsUp.Win;
-            G.I.Win();
         }
 
         return result;
@@ -202,8 +201,8 @@ public class Logic
 
         if (act.IsBarrelMovedToo)
             MoveObjectAbsolute(
-                new Point(playerHx + act.PlayerMove.X * 2, playerVy + act.PlayerMove.Y * 2),
-                new Point(playerHx + act.PlayerMove.X, PlayerVy + act.PlayerMove.Y));
+                new Point(playerX + act.PlayerMove.X * 2, playerY + act.PlayerMove.Y * 2),
+                new Point(playerX + act.PlayerMove.X, PlayerY + act.PlayerMove.Y));
 
         return WhatsUp.Undo;
     } // Undo()
@@ -213,7 +212,7 @@ public class Logic
         public Point PlayerMove = Point.Empty;
         public bool IsBarrelMovedToo = false;
 
-        public bool IsEmpty { get { return PlayerMove == Point.Empty; } }
+        public bool IsEmpty => PlayerMove == Point.Empty;
     }
 
 } // class Logic
