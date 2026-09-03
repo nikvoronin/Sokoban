@@ -135,7 +135,7 @@ public class View(Level level, Logic logic) : IDisposable
         mirrored.RotateFlip(RotateFlipType.RotateNoneFlipX);
         sx += z;
         gs.DrawImageUnscaled(mirrored, sx, 0);
-    } // GenerateSprites()
+    }
 
     public void DrawCell(int x, int y)
     {
@@ -186,8 +186,8 @@ public class View(Level level, Logic logic) : IDisposable
                     g.DrawString(str, font, Brushes.White, shift + x * z, shift + y * z);
                 }
                 break;
-        } // switch
-    } // DrawCell()
+        }
+    }
 
     public void DrawPlayer()
     {
@@ -249,4 +249,4 @@ public class View(Level level, Logic logic) : IDisposable
             g?.Dispose();
         }
     }
-} // class
+}

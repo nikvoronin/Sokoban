@@ -138,4 +138,4 @@ public partial class MenuForm : Form
                 combo.SelectedIndex = next;
         }
     }
-} // class
+}

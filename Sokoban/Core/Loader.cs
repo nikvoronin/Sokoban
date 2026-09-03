@@ -67,8 +67,8 @@ public static class Loader
 
                     blockNo = 0;
                     continue;
-                } // if (lineBuffer.Trim().Length < 1)
-            } // if (blockNo == 1)
+                }
+            }
 
             switch (blockNo)
             {
@@ -81,7 +81,7 @@ public static class Loader
                     builder.AppendLine(lineBuffer);
                     break;
             }
-        } // while ((lineBuffer = reader.ReadLine()) != null)
+        }
 
         if (blockNo == 1)
             levels.Add(new Level(name, builder.ToString()));
@@ -89,7 +89,7 @@ public static class Loader
         reader.Close();
 
         return levels;
-    } // LoadPack(Stream stream)
+    }
 
     public static Stream OpenFile(string name)
     {

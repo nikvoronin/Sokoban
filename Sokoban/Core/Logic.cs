@@ -205,7 +205,7 @@ public class Logic
                 new Point(playerX + act.PlayerMove.X, PlayerY + act.PlayerMove.Y));
 
         return WhatsUp.Undo;
-    } // Undo()
+    }
 
     private class Action
     {
@@ -215,4 +215,4 @@ public class Logic
         public bool IsEmpty => PlayerMove == Point.Empty;
     }
 
-} // class Logic
+}

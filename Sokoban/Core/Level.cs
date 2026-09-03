@@ -62,17 +62,17 @@ public class Level
                         Cells[x, y] = Cell.Plate;
                         StartAt = new Point(x, y);
                         break;
-                } // switch ch
+                }
 
                 x++;
-            } // foreach chars
+            }
 
             y++;
-        } // foreach lines
-    } // ctor
+        }
+    }
 
     public override string ToString()
     {
         return Name;
     }
-} // class 
+}

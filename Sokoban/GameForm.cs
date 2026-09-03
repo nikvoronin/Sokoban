@@ -223,11 +223,11 @@ public partial class GameForm : Form
             case Keys.F5:
                 RestartLevel(GameContext.I.Logic.Map);
                 break;
-        } // switch (e.KeyCode)
+        }
 
         if (dir.X != 0 || dir.Y != 0)
             HandleMovement(dir);
-    } // Do_Keys()
+    }
 
     private void HandleZoom(int delta)
     {
@@ -268,8 +268,8 @@ public partial class GameForm : Form
                 if (GameContext.I.Logic.PlayerX > 38)
                     Close();
                 break;
-        } // switch(whatsup)
-    } // HandleMovement()
+        }
+    }
 
     private void Show_LevelDone()
     {
