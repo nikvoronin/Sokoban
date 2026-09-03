@@ -1,10 +1,10 @@
 # Sokoban
 
-This is a small (about 64Kb) [Sokoban](https://en.wikipedia.org/wiki/Sokoban) game written in C# with vector graphics. Game and levels are packed in one .exe file. Primary goals of this project are use of vector graphics, MVC-pattern, packed embedded resources, [XInput gamepads](https://github.com/nikvoronin/XInput.Wrapper) and using of GDI+ only.
-
-[DOWNLOAD](https://github.com/nikvoronin/sokoban/releases/latest) latest release here.
+This is a small (about 256Kb) [Sokoban](https://en.wikipedia.org/wiki/Sokoban) game written in C# with vector graphics. Game and levels are packed in one .exe file. Primary goals of this project are use of vector graphics, MVC-pattern, packed embedded resources, [XInput gamepads](https://github.com/nikvoronin/XInput.Wrapper) and using of GDI+ only.
 
 ![Main menu](https://cloud.githubusercontent.com/assets/11328666/16518051/83aeb698-3f89-11e6-8efb-33c1f4483686.png)
+
+[DOWNLOAD](https://github.com/nikvoronin/sokoban/releases/latest) the latest release here.
 
 - CURSOR, WASD, [D-Pad] — to move.
 - ESCAPE, [START]  — to select another level.
