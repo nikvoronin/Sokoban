@@ -19,7 +19,6 @@ You can use gamepad at select level menu: [D-Pad] to navigate, [A] as ENTER and 
 
 ## Thanks to
 
-**ZipStorer** by [Jaime Olivares](https://github.com/jaime-olivares/zipstorer)<br/>
 **Rabbit** levels by [Thinking Rabbit](https://en.wikipedia.org/wiki/Thinking_Rabbit)<br/>
 **SVB** levels by [Belyaev S. V.](http://svb-sokoban.narod.ru)<br/>
 **GRIGoRusha** levels by [Evgeny Grigoriev](http://grigr.narod.ru)
