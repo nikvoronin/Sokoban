@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Sokoban/Sokoban.csproj" />
+  <Project Path="Sokoban.Tests/Sokoban.Tests.csproj" />
+</Solution>

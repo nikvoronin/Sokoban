@@ -1,0 +1,252 @@
+﻿namespace Sokoban.Core;
+
+/// <summary>
+/// Draws levels
+/// </summary>
+public class View(Level level, Logic logic) : IDisposable
+{
+    const int SPRITES_COUNT = 7;
+    static readonly FontFamily LETTERS_FONT_FAMILY = SystemFonts.DefaultFont.FontFamily;
+    const float LETTERS_FONT_SCALE = 0.9f;
+
+    static readonly Color COLOR_BACKGROUND = Color.FromArgb(0, 0, 40);
+    static readonly SolidBrush BRUSH_BACKGROUND = new(COLOR_BACKGROUND);
+
+    Bitmap? screen = null;
+    Bitmap? sprites = null;
+    Graphics? g = null;
+    Font? font = null;
+    int z;
+    int shift = 5;
+    public readonly Logic logic = logic;
+    public readonly Level Map = level;  // template of the level
+
+    public Image? Canvas => screen;
+    public int Width => screen!.Width;   // valid only after Resize() has run
+    public int Height => screen!.Height; // valid only after Resize() has run
+
+    public void Resize(int cellSizePx)
+    {
+        font?.Dispose();
+        screen?.Dispose();
+        sprites?.Dispose();
+        g?.Dispose();
+
+        z = cellSizePx < 10 ? 10 : cellSizePx;
+        shift = z / 4;
+        int borderW = z / 2;
+        int w = Map.Width * z + borderW;
+        int h = Map.Height * z + borderW;
+
+        screen = new Bitmap(w, h);
+        font = new Font(LETTERS_FONT_FAMILY, z * LETTERS_FONT_SCALE, GraphicsUnit.Pixel);
+        g = Graphics.FromImage(screen);
+
+        GenerateSprites();
+    }
+
+    private void GenerateSprites()
+    {
+        sprites = new Bitmap(z * SPRITES_COUNT, z);
+        var gs = Graphics.FromImage(sprites);
+
+        // empty
+        int sx = 0;
+        gs.FillRectangle(BRUSH_BACKGROUND, sx, 0, z, z);
+
+        // wall
+        sx += z;
+        int dd = (int)(z / 12.5) | 1;
+        gs.FillRectangle(Brushes.Red, sx, 0, z, z);
+        var widePen = new Pen(Brushes.DarkRed, dd);
+
+        gs.DrawLine(widePen, sx, 0, sx + z, 0);
+        gs.DrawLine(widePen, sx, z / 2, sx + z, z / 2);
+
+        gs.DrawLine(widePen, sx + z / 4, 0, sx + z / 4, z / 2);
+        gs.DrawLine(widePen, sx + z / 4 * 3, 0, sx + z / 4 * 3, z / 2);
+
+        gs.DrawLine(widePen, sx + z / 2, z / 2, sx + z / 2, z);
+
+        // barrel
+        sx += z;
+        dd = z / 20;
+        if (dd < 1) dd = 1;
+        widePen = new Pen(Brushes.Yellow, dd);
+        gs.FillRectangle(Brushes.DarkGoldenrod, sx + dd * 2, dd * 2, z - dd * 4, z - dd * 4);
+        gs.DrawRectangle(widePen, sx + dd * 2, dd * 2, z - dd * 4, z - dd * 4);
+
+        // plate
+        sx += z;
+        gs.FillRectangle(Brushes.Black, sx, 0, z, z);
+        gs.FillPolygon(
+            Brushes.DarkOrange,
+            [
+                new Point (sx, 0 ),
+                new Point (sx + z / 4, 0 ),
+                new Point (sx, z / 4 ),
+            ]);
+        gs.FillPolygon(
+            Brushes.DarkOrange,
+            [
+                new Point (sx + z, z ),
+                new Point (sx + z, z - z / 4 ),
+                new Point (sx + z - z / 4, z ),
+            ]);
+        gs.FillPolygon(
+            Brushes.DarkOrange,
+            [
+                new Point (sx, z ),
+                new Point (sx, z - z / 4 ),
+                new Point (sx + z - z / 4, 0 ),
+                new Point (sx + z, 0 ),
+                new Point (sx + z, z / 4 ),
+                new Point (sx + z / 4, z )
+            ]);
+
+        // barrel on plate
+        sx += z;
+        gs.FillRectangle(Brushes.DarkGoldenrod, sx + dd * 2, dd * 2, z - dd * 4, z - dd * 4);
+        int a = z / 3 + dd;
+        int aa = z / 3 * 2;
+        gs.DrawLine(widePen, sx + dd * 2, a, sx + z - dd * 2, a);
+        gs.DrawLine(widePen, sx + dd * 2, aa, sx + z - dd * 2, aa);
+        gs.DrawRectangle(widePen, sx + dd * 2, dd * 2, z - dd * 4, z - dd * 4);
+
+        // player
+        sx += z;
+        gs.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+        // body
+        gs.FillEllipse(Brushes.Blue, sx + 2, 2, z - 2, z - 2);
+        // tail
+        gs.FillEllipse(Brushes.Blue, sx, z - z / 2, z / 2, z / 2);
+        // eyes
+        int eyesShift = z / 20;
+        gs.FillEllipse(Brushes.White, sx + z / 3 + eyesShift, z / 3, z / 5, z / 5);
+        gs.FillEllipse(Brushes.White, sx + z / 3 * 2 + eyesShift, z / 3, z / 5, z / 5);
+
+        // flipped player 
+        Bitmap mirrored = new(z, z, gs);
+        Rectangle srcRect = new(sx, 0, z, z);
+        Graphics gm = Graphics.FromImage(mirrored);
+        gm.DrawImage(sprites,
+            0, 0,
+            srcRect, GraphicsUnit.Pixel);
+        mirrored.RotateFlip(RotateFlipType.RotateNoneFlipX);
+        sx += z;
+        gs.DrawImageUnscaled(mirrored, sx, 0);
+    }
+
+    public void DrawCell(int x, int y)
+    {
+        if (g == null || sprites == null || font == null) return;
+
+        Rectangle srcRect = new(0, 0, z, z);
+        Cell cell = logic.CellAt(x, y);
+
+        switch (cell)
+        {
+            case Cell.Empty:
+                srcRect.X = 0;
+                g.DrawImage(sprites, shift + x * z, shift + y * z, srcRect, GraphicsUnit.Pixel);
+                break;
+
+            case Cell.Wall:
+                srcRect.X = z;
+                g.DrawImage(sprites, shift + x * z, shift + y * z, srcRect, GraphicsUnit.Pixel);
+                break;
+
+            case Cell.Barrel:
+                srcRect.X = 0;
+                g.DrawImage(sprites, shift + x * z, shift + y * z, srcRect, GraphicsUnit.Pixel);
+                srcRect.X = z * 2;
+                g.DrawImage(sprites, shift + x * z, shift + y * z, srcRect, GraphicsUnit.Pixel);
+                break;
+
+            case Cell.Plate:
+                srcRect.X = z * 3;
+                g.DrawImage(sprites, shift + x * z, shift + y * z, srcRect, GraphicsUnit.Pixel);
+                break;
+
+            case Cell.BarrelOnPlate:
+                // plate
+                srcRect.X = z * 3;
+                g.DrawImage(sprites, shift + x * z, shift + y * z, srcRect, GraphicsUnit.Pixel);
+
+                // barrel on plate
+                srcRect.X = z * 4;
+                g.DrawImage(sprites, shift + x * z, shift + y * z, srcRect, GraphicsUnit.Pixel);
+                break;
+            default:
+                if ((byte)cell > 7 && (byte)cell < 255)
+                {
+                    string str = "" + Convert.ToChar(cell);
+                    srcRect.X = 0;
+                    g.DrawImage(sprites, shift + x * z, shift + y * z, srcRect, GraphicsUnit.Pixel);
+                    g.DrawString(str, font, Brushes.White, shift + x * z, shift + y * z);
+                }
+                break;
+        }
+    }
+
+    public void DrawPlayer()
+    {
+        if (g == null || sprites == null) return;
+
+        DrawCell(logic.PlayerX, logic.PlayerY);
+
+        Rectangle srcRect =
+            logic.PlayerDir.X > -1 ?
+                new Rectangle(z * 5, 0, z, z) :
+                new Rectangle(z * 6, 0, z, z);
+
+        g.DrawImage(
+            sprites,
+            shift + logic.PlayerX * z, shift + logic.PlayerY * z,
+            srcRect, GraphicsUnit.Pixel);
+    }
+
+    public void Update()
+    {
+        if (g == null) return;
+
+        foreach (Point p in logic.CellsChanged)
+            DrawCell(p.X, p.Y);
+
+        DrawPlayer();
+    }
+
+    public void DrawField()
+    {
+        if (g == null) return;
+
+        g.Clear(COLOR_BACKGROUND);
+
+        Rectangle srcRect = new(0, 0, z, z);
+        int width = Map.Width;
+        int height = Map.Height;
+
+        for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
+                DrawCell(x, y);
+
+        DrawPlayer();
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            screen?.Dispose();
+            sprites?.Dispose();
+            font?.Dispose();
+            g?.Dispose();
+        }
+    }
+}

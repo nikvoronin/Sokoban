@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>true</ImplicitUsings>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <RootNamespace>Sokoban</RootNamespace>
+    <AssemblyName>Sokoban</AssemblyName>
+
+    <AssemblyTitle>Sokoban</AssemblyTitle>
+    <Description>Sokoban with procedurally generated vector graphics.</Description>
+    <Company>Nikolai Voronin</Company>
+    <Product>Sokoban</Product>
+    <Copyright>Copyright © 2015-2026 Nikolai Voronin</Copyright>
+    <Version>0.7.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="GameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="GameForm.Designer.cs">
+      <DependentUpon>GameForm.cs</DependentUpon>
+    </Compile>
+    <Compile Update="MenuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="MenuForm.Designer.cs">
+      <DependentUpon>MenuForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="GameForm.resx">
+      <DependentUpon>GameForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="MenuForm.resx">
+      <DependentUpon>MenuForm.cs</DependentUpon>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Levels\levels.zip" />
+    <EmbeddedResource Include="Levels\menu.pack" />
+  </ItemGroup>
+
+</Project>
